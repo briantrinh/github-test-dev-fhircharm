@@ -260,7 +260,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	}
 	
 	$(function () {
-		var rUrl = fhirConfig.serviceUrl + Resource + "?_count=" + fhirConfig.count + 
+		var rUrl = fhirConfig.serviceUrl + fhirConfig.resource + "?_count=" + fhirConfig.count + 
 			  "&_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
 		console.log(rUrl);
