@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Clinical Support Decision - Charmander | Patient</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">    
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.1/skins/all.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="http://someboyj.pe.kr/adminlte/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="http://someboyj.pe.kr/adminlte/dist/css/skins/_all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+  </head>
+  
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="index2.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>C</b>SD</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>CSD</b>Charmander</span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                            
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img src="http://someboyj.pe.kr/gacs6440/ui/dist/img/sjung93.jpg" class="user-image" alt="User Image">
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs">Daniel Jung</span>
+                </a>
+                
+              </li>
+              
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+          <!-- Sidebar user panel (optional) -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="http://someboyj.pe.kr/gacs6440/ui/dist/img/sjung93.jpg" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+              <p>Daniel Jung</p>
+              <!-- Status -->
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+
+          <!-- Sidebar Menu -->
+          <ul class="sidebar-menu">
+            <li class="header">MANAGEMENT</li>
+            <!-- Optionally, you can add icons to the links -->
+            <li class=""><a href="patientlist.html"><i class="fa fa-link"></i> <span>Patient List</span></a></li>
+			<li class="header">PATIENT</li>
+            <li class="treeview active">
+              <a href="#"><i class="fa fa-link"></i> <span>Profile</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="patient.html">General Information</a></li>
+                <li><a href="#">Conditions</a></li>
+				<li><a href="#">Observations</a></li>
+              </ul>
+            </li>
+			<li class="treeview">
+              <a href="#"><i class="fa fa-link"></i> <span>Medication</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="#">Prescription</a></li>
+                <li><a href="#">Dispense</a></li>
+				<li><a href="#">Medication Database</a></li>
+              </ul>
+            </li>
+			<li><a href="#"><i class="fa fa-link"></i> <span>Diagnostics</span></a></li>
+			<li><a href="#"><i class="fa fa-link"></i> <span>Alert</span></a></li>
+			<li class="header">SYSTEM</li>
+			<li><a href="#"><i class="fa fa-link"></i> <span>Help</span></a></li>
+          </ul><!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Patient Detail
+			  <small id="pId"></small>
+          </h1>			
+          <ol class="breadcrumb">
+			<li><a href="./"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="patientlist.html">Patient List</a></li>
+            <li class="active">Patient Detail</li>
+          </ol>
+        </section>
+		  
+        <!-- Main content -->
+        <section class="content">
+
+		  <div class="callout callout-danger">
+            <h4><i class="fa fa-warning"></i> Alerts:</h4>
+            <p>This patient is in high risk of critical health problems.  Please do something!!</p>
+          </div>
+			
+          <!-- Your Page Content Here -->
+		  <div class="box">                
+			<div class="box-body">
+			  <!-- title row -->
+			  <div class="row">
+				<div class="col-xs-12">
+				  <h2 class="page-header" id="pName">
+
+				  </h2>
+				</div><!-- /.col -->
+			  </div>
+			  <div class="row">
+				<div class="col-xs-12">
+				  	<div class="box-body">
+					  <dl class="dl-horizontal">
+						<dt>Address</dt>
+						<dd id="pAddress"></dd>
+						<dt>Age</dt>
+						<dd id="pAge"></dd>
+					  </dl>
+					</div>
+				</div>
+			  </div>
+
+			</div><!-- /.box-body -->			  
+          </div><!-- /.box -->
+	 
+		  <div class="box">
+			<div class="box-body">
+			  <table id="patients" class="table table-bordered table-striped">
+				<thead>
+				<tr>
+				  <th style="width: 20px">#</th>
+				  <th>Observation</th>
+				  <th>Metric</th>
+				  <th style="width: 200px">Time</th>
+				</tr>
+				</thead>
+				<tbody id="patient_data">
+				<!-- Loading (remove the following to stop the loading)-->
+				<div id="loading" class="overlay">
+					<i class="fa fa-refresh fa-spin"></i>
+				</div>
+				<!-- end loading -->
+				</tbody>
+				<tfoot>
+				  <tr>
+				  <th style="width: 20px">#</th>
+				  <th>Observation</th>
+				  <th>Metric</th>
+				  <th style="width: 200px">Time</th>
+				</tr>
+				</tfoot>
+			  </table>
+			</div><!-- /.box-body -->
+		  </div><!-- /.box -->
+			
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+          
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2015 <a href="#">GT CS6440 Charmander</a>.</strong> All rights reserved.
+      </footer>
+
+      
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
+	<!-- REQUIRED JS SCRIPTS -->
+
+	<!-- FHIR client -->
+    <!--script src="../fhir/fhir-client.min.js"></script-->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+	<!-- SlimScroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.6/jquery.slimscroll.min.js"></script>
+	<!-- iCheck 1.0.1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.1/icheck.min.js"></script>
+    <!-- FastClick -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="http://someboyj.pe.kr/adminlte/dist/js/app.min.js"></script>
+
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. Slimscroll is required when using the
+         fixed layout. -->
+	  
+	<!-- page script -->
+    <script>
+	  // FHIR server connection setting
+	  var fhirConfig = {
+			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp/base/",
+			count: "50",
+			offset: "0",
+			fmt: "json",
+			pretty: "true"
+		  };
+
+	  $.parseDate = function(str) {
+		var mdy = str.substring(0,10);
+		return new Date(mdy);
+	  }
+
+	  $.daydiff = function(first, second) {
+		  console.info("first:" + first);
+		  console.info("second:" + second);
+		return Math.round((second-first)/(1000*60*60*24*365));
+  	  }
+
+	  
+	  // extract parameter value
+	  $.urlParam = function(name){
+		  var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		return results[1] || 0;
+	  }
+	  
+	  // extract patient general information
+	  $.displayPatientGI = function(inputId){
+		  var rUrl = fhirConfig.serviceUrl + "Patient/" + 
+			  inputId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
+			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
+
+		  console.info(rUrl);
+
+		  $.ajax({
+			type: 'GET',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'JSON',
+			url: rUrl
+		  })
+		  .done(function(data, status){
+			var ret = data;
+			
+			console.info(ret);
+			  
+			var pGender;
+			if (ret.gender == 'male')
+			  pGender = "<i class='fa fa-mars'></i>";
+			else
+			  pGender = "<i class='fa fa-venus'></i>";
+
+			var bDate = "<small class='pull-right'>Birth Date: " + ret.birthDate + "</small>";
+			var pAge = $.daydiff($.parseDate(ret.birthDate),new Date());
+
+			//console.log(pAge);
+			  
+			var fName = ret.name[0].given[0];
+			var mName = ret.name[0].given[1];
+			var lName = ret.name[0].family[0];
+			var ads = ret.address[0].line[0] + ", " + 
+					ret.address[0].city + ", " +
+					ret.address[0].state;
+			  
+			var dsp = pGender + " " + fName + " " + mName + " " + lName + bDate;
+			
+			var patient = {
+				"profile": {
+					"id": inputId,
+					"gender": pGender,
+					"birthDate": bDate,
+					"age": pAge,
+					"name": fName + " " + mName + " " + lName,
+					"address": ads,
+					"display": dsp
+				}
+			};
+			
+			$('#pId').append('#' + patient.profile.id); // display patient index#
+			$('#pName').append(patient.profile.display);
+			$('#pAddress').append(patient.profile.address);
+			$('#pAge').append(patient.profile.age);
+			  
+		  })
+		  .fail(function(){
+			alert("Ajax failed to fetch data");
+		  });
+		
+	  }
+	  
+	  // extract patient observation information
+	  $.displayPatientObservations = function(inputId){
+		  // get observations for this patient
+		var rUrl = fhirConfig.serviceUrl + "Observation?patient=" + 
+			  inputId + "&_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
+			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
+	    //console.info(rUrl);
+
+		// get the cached _getpages
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'JSON',
+			url: rUrl
+		  })
+		  .done(function(data, status){
+			rUrl = data.link[1].url;
+			
+			// get all observation records
+			rUrl = rUrl.replace("_count=10","_count="+fhirConfig.count);
+			rUrl = rUrl.replace("_getpagesoffset=10","_getpagesoffset=0");
+		  
+			$.ajax({
+				type: 'GET',
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'JSON',
+				url: rUrl
+			  })
+			  .done(function(data, status){
+				var ret = data.entry;
+
+				var lines;
+				
+				var options = {
+					weekday: "long", year: "numeric", month: "short",
+					day: "numeric", hour: "2-digit", minute: "2-digit"
+				};
+
+				for ( var i = 0; i < ret.length; i++) {
+					var obj = ret[i];
+
+					var idx = obj.resource.id;
+					var display = obj.resource.code.coding[0].display;
+					var time = obj.resource.appliesDateTime;
+					
+					var localTime = new Date(time.replace("T"," ").substring(0,19));
+					var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
+					// convert time to UTC
+					localTime.setHours(localTime.getHours() + offsetHour);
+					
+					var metricVal;
+
+					// check if it is string type value or quantity type value
+					if (obj.resource.valueString != null)
+					  metricVal = obj.resource.valueString;
+					else
+					  metricVal = obj.resource.valueQuantity.value +
+						  obj.resource.valueQuantity.units;
+
+					lines = lines + "<tr>";
+					lines = lines + "<td>" + idx + "</td>";
+					lines = lines + "<td>" + display + "</td>";
+					lines = lines + "<td>" + metricVal + "</td>";
+					lines = lines + "<td>" + localTime.toLocaleTimeString("en-Us",options) + "</td>";
+					lines = lines + "</tr>";
+
+				};
+
+				console.log(ret);
+
+				$('#patient_data').append(lines);
+
+				$('#patients').DataTable({
+					"order": [[ 3, "desc" ]]
+				});
+				
+				$('#loading').hide();
+			  
+			  })
+			  .fail(function(){
+				alert("Ajax failed to fetch data");
+			});
+		  })
+		  .fail(function(){
+			alert("Ajax failed to fetch data");
+		});
+		
+	  }
+	  
+      $(function () {
+		  
+        var pId = $.urlParam('id');
+		
+		$.displayPatientGI(pId);		
+		$.displayPatientObservations(pId);
+		  
+      });
+    </script>    
+	
+  </body>
+</html>
