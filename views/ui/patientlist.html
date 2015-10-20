@@ -203,108 +203,71 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	  
 	<!-- page script -->
     <script>
-	  // FHIR server connection setting
-	  var fhirConfig = {
-			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp/base/",
-			count: "500",
-			offset: "0",
-			fmt: "json",
-			pretty: "true"
-		  };
-		
-	  // extract patient general information
-	  $.displayPatients = function(){
-		  var rUrl = fhirConfig.serviceUrl + "Patient" + 
-			  "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
-			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
 
-		  console.info(rUrl);
-
-		  $.ajax({
+    	var fhirConfig = {
+		serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
+		Resource: "Patient",
+		count: "50",   // Max of 50 records returned per request
+		offset: "0",
+		fmt: "json",
+		pretty: "true"
+	};
+    
+	$.displayPatients = function(rUrl, lines){
+		$.ajax({
 			type: 'GET',
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'JSON',
 			url: rUrl
-		  })
-		  .done(function(data, status){
-			  
-			rUrl = data.link[1].url;
+		})
+		.done(function(data, lines){
+			console.log(data);
+			ret = data.entry;
 			
-			// get all observation records
-			rUrl = rUrl.replace("_count=10","_count="+fhirConfig.count);
-			rUrl = rUrl.replace("_getpagesoffset=10","_getpagesoffset=0");
-		  
-			console.info(rUrl);
-			  
-			$.ajax({
-				type: 'GET',
-				contentType: 'application/json; charset=utf-8',
-				dataType: 'JSON',
-				url: rUrl
-			})
-			.done(function(data, status){
-				var ret = data.entry;
-		 		var lines;
+			for ( var i = 0; i < ret.length; i++) {
+				var obj = ret[i];
+				lines = lines + "<tr>";
+				
+				var idx = obj.resource.id;
+				var fName = obj.resource.name[0].given[0];
+				var lName = obj.resource.name[0].family[0];	
+				var address = obj.resource.address[0].line[0] + ", " + 
+					obj.resource.address[0].city + ", " +
+					obj.resource.address[0].state;		
+					
+				lines = lines + "<td>" + idx + "</td>";
+				lines = lines + "<td>" + lName + "</td>";
+				lines = lines + "<td>" + fName + "</td>";
+				lines = lines + "<td>" + address + "</td>";
+				lines = lines + "<td><input type='checkbox' class='flat-red' style='position: absolute; opacity: 0;'><span style='display:none'>on</span></td>";
+				lines = lines + "</tr>";
+			};
 
-				console.log(ret);
-
-				/* Create a patient list */
-				for ( var i = 0; i < ret.length; i++) {
-					var obj = ret[i];
-
-					lines = lines + "<tr>";
-
-					var idx = obj.resource.id;
-					var fName = obj.resource.name[0].given[0];
-					var lName = obj.resource.name[0].family[0];
-					var address = obj.resource.address[0].line[0] + ", " + 
-						obj.resource.address[0].city + ", " +
-						obj.resource.address[0].state;
-
-					lines = lines + "<td><a href='patient.html?id=" + idx + "'>" + idx + "</a></td>";
-					lines = lines + "<td>" + lName + "</td>";
-					lines = lines + "<td>" + fName + "</td>";
-					lines = lines + "<td>" + address + "</td>";
-					lines = lines + "<td><input type='checkbox' class='flat-red' style='position: absolute; opacity: 0;'><span style='display:none'>on</span></td>";
-
-					lines = lines + "</tr>";
-
-				};
-
+			$('#patient_data').append(lines);
+			
+			if(data.link[1].relation == "next"){
+				$.displayPatients(data.link[1].url, lines);
+			}
+			else{
+				console.log('you have reached the end')
 				$('#loading').hide();
-
-				  //console.log(lines);
-				$('#patient_data').append(lines);
-
 				$('#patients').DataTable();
-
-				//iCheck for checkbox and radio inputs
-				$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-				  checkboxClass: 'icheckbox_minimal-blue',
-				  radioClass: 'iradio_minimal-blue'
-				});
-				//Flat red color scheme for iCheck
-				$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-				  checkboxClass: 'icheckbox_flat-green',
-				  radioClass: 'iradio_flat-green'
-				});
-
-			  })
-			  .fail(function(){
-				alert("Ajax failed to fetch data");
-			  });	
-			  
-		  })
-		  .fail(function(){
+			}
+		})
+		.fail(function(){
 			alert("Ajax failed to fetch data");
 		});
-	  }
-	  
-      $(function () {
-        
-		$.displayPatients();
-		
-      });
+	}
+	
+	$(function () {
+		var rUrl = fhirConfig.serviceUrl + Resource + "?_count=" + fhirConfig.count + 
+			  "&_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
+			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
+		console.log(rUrl);
+		var lines;
+		$.displayPatients(rUrl, lines);
+	});
+
     </script>    
 	
   </body>
