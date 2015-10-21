@@ -166,6 +166,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						<dd id="pAddress"></dd>
 						<dt>Age</dt>
 						<dd id="pAge"></dd>
+						<dt>Active</dt>
+						<dd id="pActive"></dd>
 					  </dl>
 					</div>
 				</div>
@@ -253,7 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script>
 	  // FHIR server connection setting
 	  var fhirConfig = {
-			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp/base/",
+			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
 			count: "50",
 			offset: "0",
 			fmt: "json",
@@ -311,11 +313,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			var fName = ret.name[0].given[0];
 			var mName = ret.name[0].given[1];
 			var lName = ret.name[0].family[0];
-			var ads = ret.address[0].line[0] + ", " + 
+			var ads = ret.address[0].line[0] + ". " + 
 					ret.address[0].city + ", " +
-					ret.address[0].state;
+					ret.address[0].state + " " +
+					ret.address[0].postalCode;
 			  
 			var dsp = pGender + " " + fName + " " + mName + " " + lName + bDate;
+			
+			if (ret.active == 'true')
+				pActive = 'Yes'
+			else
+				pActive = 'No'
 			
 			var patient = {
 				"profile": {
@@ -325,7 +333,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					"age": pAge,
 					"name": fName + " " + mName + " " + lName,
 					"address": ads,
-					"display": dsp
+					"display": dsp,
+					"active": pActive
 				}
 			};
 			
@@ -333,6 +342,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			$('#pName').append(patient.profile.display);
 			$('#pAddress').append(patient.profile.address);
 			$('#pAge').append(patient.profile.age);
+			$('#pActive').append(patient.profile.active);
 			  
 		  })
 		  .fail(function(){
