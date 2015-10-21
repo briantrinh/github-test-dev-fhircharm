@@ -129,7 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Patient Detail
+            Patient Conditions
 			  <small id="pId"></small>
           </h1>			
           <ol class="breadcrumb">
@@ -348,7 +348,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	  // extract patient observation information
 	  $.displayPatientObservations = function(inputId){
 		  // get observations for this patient
-		var rUrl = fhirConfig.serviceUrl + "Observation?patient=" + 
+		var rUrl = fhirConfig.serviceUrl + "Condition?patient=" + 
 			  inputId + "&_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 			  //"&_getpagesoffset=" + pData.offset + "&_count=" + pData.count + 
 	    //console.info(rUrl);
@@ -382,9 +382,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				};
 				for ( var i = 0; i < ret.length; i++) {
 					var obj = ret[i];
-					var idx = obj.resource.id;
-					var display = obj.resource.code.coding[0].display;
-					var time = obj.resource.appliesDateTime;
+					var idx = obj.id;
+					var
+					var notes = obj.notes;
+					var time = obj.onsetDateTime;
 					
 					var localTime = new Date(time.replace("T"," ").substring(0,19));
 					var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
@@ -406,6 +407,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					lines = lines + "</tr>";
 				};
 				console.log(ret);
+				
+				var Condition = {
+					"profile": {
+						"id": inputId,
+						"gender": pGender,
+						"birthDate": bDate,
+						"age": pAge,
+						"name": fName + " " + mName + " " + lName,
+						"address": ads,
+						"display": dsp,
+						"active": pActive
+				}
+			};
+				
 				$('#patient_data').append(lines);
 				$('#patients').DataTable({
 					"order": [[ 3, "desc" ]]
