@@ -388,12 +388,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				};
 				for ( var i = 0; i < ret.length; i++) {
 					var obj = ret[i];
-					var idx = obj.id;
-					var snomedCode = obj.code.coding[0].code;
-					var snomedName = obj.code.coding[0].display;
-					var conditionStatus = obj.clinicalStatus;
-					var time = obj.onsetDateTime;
-					var notes = obj.notes;
+					var idx = obj.resource.id;
+					var snomedCode = obj.resource.code.coding[0].code;
+					var snomedName = obj.resource.code.coding[0].display;
+					var conditionStatus = obj.resource.clinicalStatus;
+					var time = obj.resource.onsetDateTime;
+					var notes = obj.resource.notes;
 					
 					var localTime = new Date(time.replace("T"," ").substring(0,19));
 					var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
