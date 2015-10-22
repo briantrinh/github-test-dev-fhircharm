@@ -417,7 +417,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					lines = lines + "</tr>";
 				};
 				console.log(ret);
-			});
 				
 				$('#patient_data').append(lines);
 				$('#patients').DataTable({
@@ -429,11 +428,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			  })
 			  .fail(function(){
 				alert("Ajax failed to fetch data");
-			});
+			  });
 		  })
 		  .fail(function(){
 			alert("Ajax failed to fetch data");
-		});
+		  });
 		
 	  }
 	  
