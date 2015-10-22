@@ -182,8 +182,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<thead>
 				<tr>
 				  <th style="width: 20px">#</th>
-				  <th>Observation</th>
-				  <th>Metric</th>
+				  <th>Name</th>
+				  <th>Code</th>
+				  <th>Status</th>
+				  <th>Notes</th>
 				  <th style="width: 200px">Time</th>
 				</tr>
 				</thead>
@@ -345,7 +347,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		
 	  }
 	  
-	  // extract patient observation information
+	  // extract patient condition information
 	  $.displayPatientObservations = function(inputId){
 		  // get observations for this patient
 		var rUrl = fhirConfig.serviceUrl + "Condition?patient=" + 
@@ -383,9 +385,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				for ( var i = 0; i < ret.length; i++) {
 					var obj = ret[i];
 					var idx = obj.id;
-					var
-					var notes = obj.notes;
+					var snomedCode = obj.code.coding[0].code;
+					var snomedName = obj.code.coding[0].display;
+					var conditionStatus = obj.clinicalStatus;
 					var time = obj.onsetDateTime;
+					var notes = obj.notes;
 					
 					var localTime = new Date(time.replace("T"," ").substring(0,19));
 					var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
@@ -399,31 +403,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					else
 					  metricVal = obj.resource.valueQuantity.value +
 						  obj.resource.valueQuantity.units;
+						  
 					lines = lines + "<tr>";
 					lines = lines + "<td>" + idx + "</td>";
-					lines = lines + "<td>" + display + "</td>";
-					lines = lines + "<td>" + metricVal + "</td>";
+					lines = lines + "<td>" + snomedName + "</td>";
+					lines = lines + "<td>" + snomedCode + "</td>";
+					lines = lines + "<td>" + conditionStatus + "</td>";
+					lines = lines + "<td>" + notes + "</td>";
 					lines = lines + "<td>" + localTime.toLocaleTimeString("en-Us",options) + "</td>";
 					lines = lines + "</tr>";
 				};
 				console.log(ret);
-				
-				var Condition = {
-					"profile": {
-						"id": inputId,
-						"gender": pGender,
-						"birthDate": bDate,
-						"age": pAge,
-						"name": fName + " " + mName + " " + lName,
-						"address": ads,
-						"display": dsp,
-						"active": pActive
-				}
 			};
 				
 				$('#patient_data').append(lines);
 				$('#patients').DataTable({
-					"order": [[ 3, "desc" ]]
+					"order": [[ 5, "desc" ]]
 				});
 				
 				$('#loading').hide();
