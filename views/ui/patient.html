@@ -320,7 +320,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			  
 			var dsp = pGender + " " + fName + " " + mName + " " + lName + bDate;
 			
-			console.log(ret.active)
 			if (ret.active == true)
 				pActive = 'Yes'
 			else
@@ -382,6 +381,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			  })
 			  .done(function(data, status){
 				var ret = data.entry;
+				console.log(data)
 
 				var lines;
 				
@@ -419,8 +419,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					lines = lines + "</tr>";
 
 				};
-
-				console.log(ret);
 
 				$('#patient_data').append(lines);
 
