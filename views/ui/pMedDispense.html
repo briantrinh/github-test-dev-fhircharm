@@ -382,7 +382,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				lines = lines + "</tr>";
 			};
 			$('#patient_data').append(lines);
-			if(data.link[1].relation == "next"){
+			if(data.link[1]){
+				if(data.link[1].relation == "next")
 				$.displayPatientMedicationDispense(data.link[1].url, lines);
 			}
 			else{
