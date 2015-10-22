@@ -18,10 +18,6 @@ router.get('/ui/patient.html', function(req, res){
   res.render('ui/patient.html', { title: 'Express'});
 });
 
-router.get('/ui/pConditions.html', function(req, res){
-  res.render('ui/pConditions.html', { title: 'Express'});
-});
-
 router.get('/ui/register.html', function(req, res){
   res.render('ui/register.html', { title: 'Express'});
 });
