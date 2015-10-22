@@ -259,7 +259,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	  // FHIR server connection setting
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
-			count: "10",
+			count: "50",
 			offset: "0",
 			fmt: "json",
 			pretty: "true"
@@ -383,8 +383,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			};
 			$('#patient_data').append(lines);
 			if(data.link[1]){
-				if(data.link[1].relation == "next")
-				$.displayPatientMedicationDispense(data.link[1].url, lines);
+				if(data.link[1].relation == "next"){
+					$.displayPatientMedicationDispense(data.link[1].url, lines);
+				}
+				else{
+					console.log('you have reached the end');
+					$('#loading').hide();
+					$('#patients').DataTable({
+						"order": [[ 5, "desc" ]]
+					});
+				}
 			}
 			else{
 				console.log('you have reached the end');
