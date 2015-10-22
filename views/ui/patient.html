@@ -417,8 +417,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         	var pId = $.urlParam('id');
         	document.getElementById("ConditionLink").href = 'pConditions.html?id=' + pId;
         	
-		var rUrl = fhirConfig.serviceUrl + "Condition?patient=" + 
-			  pId + "&_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
+		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
+			inputId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 		console.log(rUrl);	
 		$.displayPatientGI(rUrl, pId);
 	
