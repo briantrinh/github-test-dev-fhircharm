@@ -405,7 +405,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       		var lines;
         	var pId = $.urlParam('id');
         	document.getElementById("ConditionLink").href = 'pConditions.html?id=' + pId;
-        	document.getElementById("ObservationLink").href = 'patient.html?id=' + pId;
         	
 		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
