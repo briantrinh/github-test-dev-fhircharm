@@ -111,6 +111,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <ul class="treeview-menu">
                 <li><a href="#">Prescription</a></li>
                 <li><a href="#">Dispense</a></li>
+                <li><a href="#">Medication Database</a></li>
               </ul>
             </li>
 			<li><a href="#"><i class="fa fa-link"></i> <span>Diagnostics</span></a></li>
@@ -179,11 +180,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<thead>
 				<tr>
 				  <th style="width: 20px">#</th>
-				  <th>Quantity</th>
-				  <th>Units</th>
-				  <th>Supply</th>
-				  <th>Reference</th>
-				  <th style="width: 200px">Time</th>
+				  <th>Medication</th>
+				  <th>Status</th>
+				  <th>NumOfRepeats</th>
+				  <th>Prescriber</th>
+				  <th>encounter</th>
+				  <th style="width: 200px">DatePrescribed</th>
 				</tr>
 				</thead>
 				<tbody id="patient_data">
@@ -194,13 +196,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<!-- end loading -->
 				</tbody>
 				<tfoot>
-				  <tr>
+				<tr>
 				  <th style="width: 20px">#</th>
-				  <th>Quantity</th>
-				  <th>Units</th>
-				  <th>Supply</th>
-				  <th>Reference</th>
-				  <th style="width: 200px">Time</th>
+				  <th>Medication</th>
+				  <th>Status</th>
+				  <th>NumOfRepeats</th>
+				  <th>Prescriber</th>
+				  <th>encounter</th>
+				  <th style="width: 200px">DatePrescribed</th>
 				</tr>
 				</tfoot>
 			  </table>
@@ -341,7 +344,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	}
 	  
 	// extract patient observation information
-	$.displayPatientMedicationDispense = function(rUrl, lines){
+	$.displayPatientMedicationPrescription = function(rUrl, lines){
 		// get the cached _getpages
 		$.ajax({
 			type: 'GET',
@@ -360,11 +363,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			for ( var i = 0; i < ret.length; i++) {
 				var obj = ret[i];
 				var idx = obj.resource.id;
-				var quantity = obj.resource.quantity.value;
-				var units = obj.resource.quantity.units;
-				var supply = obj.resource.daysSupply.value;
-				var reference = obj.resource.medication.reference;
-				var time = obj.resource.whenPrepared;
+				var medication = obj.resource.medication.reference;
+				var status = obj.resource.text.status;
+				var repeats = obj.resource.dispense.numberofRepeatsAllowed;
+				var prescriber = obj.resource.prescriber.reference;
+				var encounter = obj.resource.encounter.reference;
+				var time = obj.resource.dateWritten;
 					
 				var localTime = new Date(time.replace("T"," ").substring(0,19));
 				var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
@@ -373,23 +377,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				
 				lines = lines + "<tr>";
 				lines = lines + "<td>" + idx + "</td>";
-				lines = lines + "<td>" + quantity + "</td>";
-				lines = lines + "<td>" + units + "</td>";
-				lines = lines + "<td>" + supply + "</td>";
-				lines = lines + "<td>" + reference + "</td>";
+				lines = lines + "<td>" + medication + "</td>";
+				lines = lines + "<td>" + status + "</td>";
+				lines = lines + "<td>" + repeats + "</td>";
+				lines = lines + "<td>" + prescriber + "</td>";
+				lines = lines + "<td>" + encounter + "</td>";
 				lines = lines + "<td>" + localTime.toLocaleTimeString("en-Us",options) + "</td>";
 				lines = lines + "</tr>";
 			};
 			$('#patient_data').append(lines);
 			if(data.link[1]){
 				if(data.link[1].relation == "next"){
-					$.displayPatientMedicationDispense(data.link[1].url, lines);
+					$.displayPatientMedicationPrescription(data.link[1].url, lines);
 				}
 				else{
 					console.log('you have reached the end');
 					$('#loading').hide();
 					$('#patients').DataTable({
-						"order": [[ 5, "desc" ]]
+						"order": [[ 6, "desc" ]]
 					});
 				}
 			}
@@ -412,18 +417,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
       	
       		var lines;
         	var pId = $.urlParam('id');
-        	document.getElementById("ConditionLink").href = 'pConditions.html?id=' + pId;
+        	//document.getElementById("ConditionLink").href = 'pConditions.html?id=' + pId;
         	
 		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 		console.log(rUrl);	
 		$.displayPatientGI(rUrl, pId);
 		
-		var rUrl = fhirConfig.serviceUrl + "MedicationDispense?patient=" + pId +
+		var rUrl = fhirConfig.serviceUrl + "MedicationPrescription?patient=" + pId +
 			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(rUrl);
-		$.displayPatientMedicationDispense(rUrl, lines);
+		$.displayPatientMedicationPrescription(rUrl, lines);
 		  
       });
       
