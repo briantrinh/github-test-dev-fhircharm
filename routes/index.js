@@ -18,6 +18,10 @@ router.get('/ui/pMedDispense.html', function(req, res){
   res.render('ui/pMedDispense.html', { title: 'Express'});
 });
 
+router.get('/ui/MedicationDB.html', function(req, res){
+  res.render('ui/MedicationDB.html', { title: 'Express'});
+});
+
 router.get('/ui/pMedPrescription.html', function(req, res){
   res.render('ui/pMedPrescription.html', { title: 'Express'});
 });
