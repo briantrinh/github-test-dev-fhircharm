@@ -184,7 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				  <th>Status</th>
 				  <th>NumOfRepeats</th>
 				  <th>Prescriber</th>
-				  <th>encounter</th>
+				  <th>Encounter</th>
 				  <th style="width: 200px">DatePrescribed</th>
 				</tr>
 				</thead>
@@ -202,7 +202,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				  <th>Status</th>
 				  <th>NumOfRepeats</th>
 				  <th>Prescriber</th>
-				  <th>encounter</th>
+				  <th>Encounter</th>
 				  <th style="width: 200px">DatePrescribed</th>
 				</tr>
 				</tfoot>
@@ -365,7 +365,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				var idx = obj.resource.id;
 				var medication = obj.resource.medication.reference;
 				var status = obj.resource.text.status;
-				var repeats = obj.resource.dispense.numberofRepeatsAllowed;
+				var repeats = obj.resource.dispense.numberOfRepeatsAllowed;
 				var prescriber = obj.resource.prescriber.reference;
 				var encounter = obj.resource.encounter.reference;
 				var time = obj.resource.dateWritten;
@@ -394,7 +394,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					console.log('you have reached the end');
 					$('#loading').hide();
 					$('#patients').DataTable({
-						"order": [[ 6, "desc" ]]
+						"order": [[ 7, "desc" ]]
 					});
 				}
 			}
