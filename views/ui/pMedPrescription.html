@@ -181,7 +181,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<tr>
 				  <th style="width: 20px">#</th>
 				  <th>Medication</th>
-				  <th>Status</th>
 				  <th>NumOfRepeats</th>
 				  <th>Prescriber</th>
 				  <th>Encounter</th>
@@ -199,7 +198,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<tr>
 				  <th style="width: 20px">#</th>
 				  <th>Medication</th>
-				  <th>Status</th>
 				  <th>NumOfRepeats</th>
 				  <th>Prescriber</th>
 				  <th>Encounter</th>
@@ -378,7 +376,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				lines = lines + "<tr>";
 				lines = lines + "<td>" + idx + "</td>";
 				lines = lines + "<td>" + medication + "</td>";
-				lines = lines + "<td>" + status + "</td>";
 				lines = lines + "<td>" + repeats + "</td>";
 				lines = lines + "<td>" + prescriber + "</td>";
 				lines = lines + "<td>" + encounter + "</td>";
@@ -394,7 +391,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					console.log('you have reached the end');
 					$('#loading').hide();
 					$('#patients').DataTable({
-						"order": [[ 6, "desc" ]]
+						"order": [[ 5, "desc" ]]
 					});
 				}
 			}
@@ -402,7 +399,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				console.log('you have reached the end');
 				$('#loading').hide();
 				$('#patients').DataTable({
-					"order": [[ 6, "desc" ]]
+					"order": [[ 5, "desc" ]]
 				});
 			}
 			
