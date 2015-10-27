@@ -245,10 +245,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		})
 		.done(function(data, lines){
 			console.log(data);
-			var ret = data.entry;
+			if(data.entry){
+				var ret = data.entry;
 				
-			for ( var i = 0; i < ret.length; i++) {
-				var obj = ret[i];
+				for ( var i = 0; i < ret.length; i++) {
+					var obj = ret[i];
+					var idx = obj.resource.id;
+					var name = obj.resource.name;
+					var code = obj.resource.code.coding[0].code;
+					
+					lines = lines + "<tr>";
+					lines = lines + "<td>" + idx + "</td>";
+					lines = lines + "<td>" + name + "</td>";
+					lines = lines + "<td>" + code + "</td>";
+					lines = lines + "</tr>";
+				};
+			}
+			else{
 				var idx = obj.resource.id;
 				var name = obj.resource.name;
 				var code = obj.resource.code.coding[0].code;
@@ -258,7 +271,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				lines = lines + "<td>" + name + "</td>";
 				lines = lines + "<td>" + code + "</td>";
 				lines = lines + "</tr>";
-			};
+			}
+			
 			$('#patient_data').append(lines);
 			if(data.link[1]){
 				if(data.link[1].relation == "next"){
