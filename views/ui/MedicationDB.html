@@ -274,15 +274,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			}
 			
 			$('#patient_data').append(lines);
-			if(data.link[1]){
-				if(data.link[1].relation == "next"){
-					$.displayMedication(data.link[1].url, lines);
+			if(data.link){
+				if(data.link[1]){
+					if(data.link[1].relation == "next"){
+						$.displayMedication(data.link[1].url, lines);
+					}
+					else{
+						console.log('you have reached the end');
+						$('#loading').hide();
+						$('#patients').DataTable();
+					}
 				}
 				else{
 					console.log('you have reached the end');
 					$('#loading').hide();
 					$('#patients').DataTable();
-				}
+				}				
 			}
 			else{
 				console.log('you have reached the end');
