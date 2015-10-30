@@ -13,6 +13,11 @@ exports.render = function(req, res) {
 			id: patient_id,
 			pagetype: 'patientcondition'
 		});
+	} else if (category == 'prescription') {
+		res.render('patientprescription', {
+			id: patient_id,
+			pagetype: 'patientprescription'
+		});
 	}
 };
 
