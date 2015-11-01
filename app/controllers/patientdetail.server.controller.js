@@ -19,6 +19,12 @@ exports.render = function(req, res) {
 			pagetype: 'patientprescription'
 		});
 	}
+	} else if (category == 'dispense') {
+		res.render('patientdispense', {
+			id: patient_id,
+			pagetype: 'patientdispense'
+		});
+	}
 };
 
 var Patient = require('mongoose').model('Patient');
