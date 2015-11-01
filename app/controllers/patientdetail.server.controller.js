@@ -18,6 +18,11 @@ exports.render = function(req, res) {
 			id: patient_id,
 			pagetype: 'patientprescription'
 		});
+	} else if (category == 'dispense') {
+		res.render('patientdispense', {
+			id: patient_id,
+			pagetype: 'patientdispense'
+		});
 	}
 };
 
