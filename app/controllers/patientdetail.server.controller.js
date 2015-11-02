@@ -24,12 +24,6 @@ exports.render = function(req, res) {
 			id: patient_id,
 			pagetype: 'patientdispense'
 		});
-	} else if (category == 'medicationdb') {
-		res.render('medicationdb', {
-			id: patient_id,
-			medid: medication_id,
-			pagetype: 'medicationdb'
-		});
 	}
 };
 
