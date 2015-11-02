@@ -2,7 +2,6 @@ exports.render = function(req, res) {
 	
 	var patient_id = req.patientId;
 	var category = req.category;
-	var medication_id = req.medicationId;
 	
 	if (category == 'observation') {
 		res.render('patientobservation', {
