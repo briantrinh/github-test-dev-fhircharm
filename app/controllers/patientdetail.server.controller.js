@@ -2,6 +2,7 @@ exports.render = function(req, res) {
 	
 	var patient_id = req.patientId;
 	var category = req.category;
+	var medication_id = req.medicationId;
 	
 	if (category == 'observation') {
 		res.render('patientobservation', {
@@ -22,6 +23,12 @@ exports.render = function(req, res) {
 		res.render('patientdispense', {
 			id: patient_id,
 			pagetype: 'patientdispense'
+		});
+	} else if (category == 'medicationdb') {
+		res.render('medicationdb', {
+			id: patient_id,
+			medid: medication_id,
+			pagetype: 'medicationdb'
 		});
 	}
 };
