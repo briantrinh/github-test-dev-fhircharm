@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+   <title>Clinical Support Decision - Charmander | Medication Database</title>
+   <% include ./partials/head %>
+  </head>
+  
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+    <% include ./partials/header %>
+    <% include ./partials/side %>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Medication Database
+            <small id="pId"></small>
+          </h1>			
+          <ol class="breadcrumb">
+			<li><a href="./"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="patientlist.html">Patient List</a></li>
+            <li class="active">Medication Database</li>
+          </ol>
+        </section>
+		  
+        <!-- Main content -->
+        <section class="content">
+			
+          <!-- Your Page Content Here -->
+
+		  <div class="box">
+			<div class="box-body">
+			  <table id="patients" class="table table-bordered table-striped">
+				<thead>
+				<tr>
+				  <th style="width: 20px">#</th>
+				  <th>Name</th>
+				  <th>NLM Code</th>
+				</tr>
+				</thead>
+				<tbody id="patient_data">
+				<!-- Loading (remove the following to stop the loading)-->
+				<div id="loading" class="overlay">
+					<i class="fa fa-refresh fa-spin"></i>
+				</div>
+				<!-- end loading -->
+				</tbody>
+				<tfoot>
+				<tr>
+				  <th style="width: 20px">#</th>
+				  <th>Name</th>
+				  <th>NLM Code</th>
+				</tr>
+				</tfoot>
+			  </table>
+			</div><!-- /.box-body -->
+		  </div><!-- /.box -->
+			
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+
+    <% include ./partials/footer %>
+      
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
+	<!-- REQUIRED JS SCRIPTS -->
+
+	<!-- FHIR client -->
+    <!--script src="../fhir/fhir-client.min.js"></script-->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+	<!-- SlimScroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.6/jquery.slimscroll.min.js"></script>
+	<!-- iCheck 1.0.1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.1/icheck.min.js"></script>
+    <!-- FastClick -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="http://someboyj.pe.kr/adminlte/dist/js/app.min.js"></script>
+
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. Slimscroll is required when using the
+         fixed layout. -->
+	  
+	<!-- page script -->
+    <script>
+    	
+	  // FHIR server connection setting
+	  var fhirConfig = {
+			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
+			count: "50",
+			offset: "0",
+			fmt: "json",
+			pretty: "true"
+		  };
+		  
+	  // extract parameter value
+	  $.urlParam = function(name){
+		  var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		return results[1] || 0;
+	  }
+	  
+	// extract patient observation information
+	$.displayMedication = function(rUrl, lines){
+		// get the cached _getpages
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'JSON',
+			url: rUrl
+		})
+		.done(function(data, lines){
+			console.log(data);
+			if(data.entry){
+				var ret = data.entry;
+				
+				for ( var i = 0; i < ret.length; i++) {
+					var obj = ret[i];
+					var idx = obj.resource.id;
+					var name = obj.resource.name;
+					var code = obj.resource.code.coding[0].code;
+					
+					lines = lines + "<tr>";
+					lines = lines + "<td>" + idx + "</td>";
+					lines = lines + "<td>" + name + "</td>";
+					lines = lines + "<td>" + code + "</td>";
+					lines = lines + "</tr>";
+				};
+			}
+			else{
+				var idx = data.id;
+				var name = data.name;
+				var code = data.code.coding[0].code;
+				
+				lines = lines + "<tr>";
+				lines = lines + "<td>" + idx + "</td>";
+				lines = lines + "<td>" + name + "</td>";
+				lines = lines + "<td>" + code + "</td>";
+				lines = lines + "</tr>";
+			}
+			
+			$('#patient_data').append(lines);
+			if(data.link){
+				if(data.link[1]){
+					if(data.link[1].relation == "next"){
+						$.displayMedication(data.link[1].url, lines);
+					}
+					else{
+						console.log('you have reached the end');
+						$('#loading').hide();
+						$('#patients').DataTable();
+					}
+				}
+				else{
+					console.log('you have reached the end');
+					$('#loading').hide();
+					$('#patients').DataTable();
+				}				
+			}
+			else{
+				console.log('you have reached the end');
+				$('#loading').hide();
+				$('#patients').DataTable();
+			}
+			
+			  
+		})
+		.fail(function(){
+			alert("Ajax failed to fetch data");
+		});
+	}
+	  
+	$(function () {
+      	
+      		var lines;
+        	//var medId = $.urlParam('id');
+        	var pId = <%=id%>;
+		      var medId = <%=medid%>;
+		      
+        	//document.getElementById("ConditionLink").href = 'pConditions.html?id=' + pId;
+        	
+        	if(medId == 0){ // Display all medication
+			var rUrl = fhirConfig.serviceUrl + "Medication?_count=" +
+				fhirConfig.count + "&_format=" + fhirConfig.fmt +
+				"&_pretty=" + fhirConfig.pretty;
+        	}
+        	else{ // Display specific medication
+			var rUrl = fhirConfig.serviceUrl + "Medication/" + medId +
+				"?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;   		
+        	}
+		console.log(rUrl);	
+		
+		$.displayMedication(rUrl, lines);
+		  
+      });
+      
+    </script>    
+	
+  </body>
+</html>
