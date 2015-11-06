@@ -1,30 +1,47 @@
+var User = require('mongoose').model('User'),
+	passport = require('passport');
+
 exports.render = function(req, res) {
 	
 	var patient_id = req.patientId;
 	var category = req.category;
 	
 	if (category == 'observation') {
-		res.render('patientobservation', {
-			id: patient_id,
-			pagetype: 'patientobservation'
-		});
+		
+		if (!req.user) {
+			req.session.returnTo = '/patientdetail/' + patient_id + '/observation';
+				
+			res.render('signin', {
+				messages: ''
+			});
+		} else {
+			res.render('patientobservation', {
+				title: 'Patient Observations',
+				id: patient_id,
+				pagetype: 'patientobservation',
+				alert: ''
+			});
+		}
+		
+		
 	} else if (category == 'condition') {
-		res.render('patientcondition', {
-			id: patient_id,
-			pagetype: 'patientcondition'
-		});
-	} else if (category == 'prescription') {
-		res.render('patientprescription', {
-			id: patient_id,
-			pagetype: 'patientprescription'
-		});
-	} else if (category == 'dispense') {
-		res.render('patientdispense', {
-			id: patient_id,
-			pagetype: 'patientdispense'
-		});
+		if (!req.user) {
+			req.session.returnTo = '/patientdetail/' + patient_id + '/condition';
+				
+			res.render('signin', {
+				messages: ''
+			});
+		} else {
+			res.render('patientcondition', {
+				title: 'Patient Conditions',
+				id: patient_id,
+				pagetype: 'patientcondition'
+			});
+		}
 	}
 };
+
+
 
 var Patient = require('mongoose').model('Patient');
 

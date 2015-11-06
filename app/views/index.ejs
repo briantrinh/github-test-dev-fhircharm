@@ -16,10 +16,8 @@
         <a href="patientlist" target="_blank">Patient List</a> - List of patients that you are caring <br>
 		<a href="patientdetail/1/observation" target="_blank">Patient Observation</a> - Details of selected patient<br>
 		<a href="patientdetail/1/condition" target="_blank">Patient Condition</a> - Details of selected patient<br>
-		<a href="patientdetail/1/prescription" target="_blank">Patient Prescription</a> - Details of selected patient<br>
-		<a href="patientdetail/1/dispense" target="_blank">Patient Med Dispense</a> - Details of selected patient<br>
-		<a href="login" target="_blank">Login</a> - Login Screen<br>
-		<a href="register" target="_blank">Register</a> - Register a new user<br>
+		<a href="signin" target="_blank">Login</a> - Login Screen<br>
+		<a href="signup" target="_blank">Register</a> - Register a new user<br>
 		<a href="lock" target="_blank">Lock Screen</a> - Session is timed out<br>
       </div>
       <div class="lockscreen-footer text-center">
@@ -34,5 +32,6 @@
 		  alert('<%=data %>');
 	  }
     </script>  
+	<% include ./partials/bottom %>	
   </body>
 </html>

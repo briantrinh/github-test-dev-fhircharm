@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Clinical Support Decision - Charmander | Patient List</title>
+    <title>Clinical Support Decision - Charmander | <%=title %></title>
     <% include ./partials/head %>	
   </head>
   
@@ -16,12 +16,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Patient List
+            <%=title %>
             <small>List of patients that you are caring</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Patient List</li>
+            <li class="active"><%=title %></li>
           </ol>
         </section>
 
@@ -125,17 +125,15 @@
 
 					lines = lines + "<tr>";
 
-					var idx = obj.resource.id;
+					var idx = obj.id;
 					var fName = "";
 					var lName = "";
 					var address = "";
 					
 					try {
-						fName = obj.resource.name[0].given[0];
-						lName = obj.resource.name[0].family[0];
-						address = obj.resource.address[0].line[0] + ", " + 
-							obj.resource.address[0].city + ", " +
-							obj.resource.address[0].state;
+						fName = obj.name[0].given[0];
+						lName = obj.name[0].family[0];
+						address = obj.address;
 					} catch(e) {
 						console.log('id=' + idx + ', no objects');
 					}
@@ -155,8 +153,6 @@
 				  //console.log(lines);
 				$('#patient_data').append(lines);
 
-				$('#patients').DataTable();
-
 				//iCheck for checkbox and radio inputs
 				$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
 				  checkboxClass: 'icheckbox_minimal-blue',
@@ -167,6 +163,8 @@
 				  checkboxClass: 'icheckbox_flat-green',
 				  radioClass: 'iradio_flat-green'
 				});
+			  
+                $('#patients').DataTable();
 
 		  })
 		  .fail(function(){
@@ -180,6 +178,6 @@
 		
       });
     </script>    
-	
+	<% include ./partials/bottom %>		
   </body>
 </html>

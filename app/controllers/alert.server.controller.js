@@ -5,6 +5,10 @@ exports.render = function(req, res) {
 	
 	req.session.lastVisit = new Date();
 	
+	res.json('patient');
+};
+
+exports.check = function(req, res) {
 	res.send('To be implemented...');
 	
 };

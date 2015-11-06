@@ -12,22 +12,58 @@ exports.render = function(req, res) {
 		mongodb.MongoClient.connect(config.db, function(err, db) {
   
 			if(err) throw err;
-						
-		  	var patients = db.collection('patients');
+
+			console.log("Connected to Database");
+			
+			
+			var patientsdump = db.collection('patientsdump');
 
 			// remove the existing data
-			patients.drop(function (err) {
+			patientsdump.drop(function (err) {
 				if(err) throw err;
 			});
 
-			
+
 			// bulk insert the new data
-		  	patients.insert(seedData, function(err, result) {
-
+			patientsdump.insert(seedData, function(err, result) {
 				if(err) throw err;
+			});
 
-		  	});
-			
+
+			var patients = db.collection('patients');
+
+			// update patient data
+			patientsdump.find().forEach(function(doc) {
+				
+				var id = '{"id" : "' + doc.resource.id + '"}';
+				var query = JSON.parse(id);
+				var o = '{"upsert" : true}';
+				var option = JSON.parse(o);
+					
+				var updateData =  JSON.parse(id);
+				updateData.name = doc.resource.name;
+				updateData.firstName = doc.resource.name[0].given[0];
+				updateData.lastName = doc.resource.name[0].family[0];
+				updateData.middleName = doc.resource.name[0].given[1];
+				updateData.gender = doc.resource.gender;
+				updateData.birthDate = doc.resource.birthDate;
+				updateData.address = doc.resource.address[0].line[0] + ', ' + 
+					doc.resource.address[0].city + ', ' + 
+					doc.resource.address[0].state;
+				updateData.active = doc.resource.active;
+				
+				console.info(query);
+
+				patients.update(query, updateData, option, function (err, result) {
+					if(err) {
+						//throw err;
+						console.error(err);
+					}
+				});
+
+
+			});
+
 		});
 
 
