@@ -45,6 +45,17 @@ exports.render = function(req, res) {
 			sessionTimeOut: 'yes',
 			sessionTimeOutDuration: config.sessionTimeOutDuration
 		});
+	} else if (category == 'dispense') {
+		res.render('patientdispense', {
+			title: 'Patient Prescription Dispense',
+			id: patient_id,
+			pagetype: 'patientdispense',
+			userid: req.user.username,
+			username: req.user.firstName + ' ' + req.user.lastName,
+			membersince: req.user.created,
+			sessionTimeOut: 'yes',
+			sessionTimeOutDuration: config.sessionTimeOutDuration
+		});
 	}
 };
 
