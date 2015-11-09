@@ -34,6 +34,17 @@ exports.render = function(req, res) {
 			sessionTimeOut: 'yes',
 			sessionTimeOutDuration: config.sessionTimeOutDuration
 		});
+	} else if (category == 'prescription') {
+		res.render('patientprescription', {
+			title: 'Patient Prescription',
+			id: patient_id,
+			pagetype: 'patientprescription',
+			userid: req.user.username,
+			username: req.user.firstName + ' ' + req.user.lastName,
+			membersince: req.user.created,
+			sessionTimeOut: 'yes',
+			sessionTimeOutDuration: config.sessionTimeOutDuration
+		});
 	}
 };
 
