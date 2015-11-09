@@ -1,5 +1,5 @@
-var index = require('../../app/controllers/index.server.controller');
-var mongomgr = require('../../app/controllers/mongodb.server.controller');
+var index = require('../controllers/index.server.controller');
+var mongomgr = require('../controllers/mongodb.server.controller');
 
 var fhir = require('fhir-node');
 		
