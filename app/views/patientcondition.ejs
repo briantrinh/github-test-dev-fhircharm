@@ -304,7 +304,7 @@
 
 		$.displayPatientGI(rUrl, pId);
 		
-		var rUrl = fhirConfig.serviceUrl + "Observation?patient=" + pId +
+		var rUrl = fhirConfig.serviceUrl + "Condition?patient=" + pId +
 			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(rUrl);
