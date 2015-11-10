@@ -274,66 +274,6 @@
 		
 	  }
 	  
-	// extract patient observation information
-
-	$.displayPatientObservations = function(rUrl, lines){
-		// get the cached _getpages
-		$.ajax({
-			type: 'GET',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'JSON',
-			url: rUrl
-		})
-		.done(function(data, lines){
-			console.log(data);
-			var ret = data.entry;
-			
-			var options = {
-				weekday: "long", year: "numeric", month: "short",
-				day: "numeric", hour: "2-digit", minute: "2-digit"
-			};
-			for ( var i = 0; i < ret.length; i++) {
-				var obj = ret[i];
-				var idx = obj.resource.id;
-				var display = obj.resource.code.coding[0].display;
-				var time = obj.resource.appliesDateTime;
-					
-				var localTime = new Date(time.replace("T"," ").substring(0,19));
-				var offsetHour = (localTime.getTimezoneOffset()/60) + eval(time.substring(19,20) + eval(time.substring(20,22)));
-				// convert time to UTC
-				localTime.setHours(localTime.getHours() + offsetHour);
-				
-				var metricVal;
-				// check if it is string type value or quantity type value
-				if (obj.resource.valueString != null)
-					metricVal = obj.resource.valueString;
-				else
-					metricVal = obj.resource.valueQuantity.value +
-						obj.resource.valueQuantity.units;
-				lines = lines + "<tr>";
-				lines = lines + "<td>" + idx + "</td>";
-				lines = lines + "<td>" + display + "</td>";
-				lines = lines + "<td>" + metricVal + "</td>";
-				lines = lines + "<td>" + localTime.toLocaleTimeString("en-Us",options) + "</td>";
-				lines = lines + "</tr>";
-			};
-			$('#patient_data').append(lines);
-			if(data.link[1].relation == "next"){
-				$.displayPatientObservations(data.link[1].url, lines);
-			}
-			else{
-				console.log('you have reached the end');
-				$('#loading').hide();
-				$('#patients').DataTable({
-					"order": [[ 3, "desc" ]]
-				});
-			}
-		})
-		.fail(function(){
-			alert("Ajax failed to fetch data");
-		});
-	}
-	  
       $(function () {
 
       		var lines;
@@ -345,12 +285,6 @@
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 		console.log(rUrl);	
 		$.displayPatientGI(rUrl, pId);		
-		
-		var rUrl = fhirConfig.serviceUrl + "Observation?patient=" + pId +
-			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
-			"&_pretty=" + fhirConfig.pretty;
-    		console.log(rUrl);
-		$.displayPatientObservations(rUrl, lines);
 		  
 		console.log('<%=alert%>');
       });
