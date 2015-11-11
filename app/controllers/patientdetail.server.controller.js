@@ -63,9 +63,9 @@ exports.render = function(req, res) {
 	} else if (category == 'alert') {
 		res.render('patientalerts', {
 			title: 'Patient Alerts',
-			menugroup: 'Medication',
+			menugroup: 'Alert',
 			id: patient_id,
-			pagetype: 'patientalerts',
+			pagetype: 'patientalert',
 			userid: req.user.username,
 			username: req.user.firstName + ' ' + req.user.lastName,
 			membersince: req.user.created,
