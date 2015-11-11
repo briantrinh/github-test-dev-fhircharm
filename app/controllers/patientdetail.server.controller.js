@@ -65,7 +65,7 @@ exports.render = function(req, res) {
 			title: 'Patient Alerts',
 			menugroup: 'Alert',
 			id: patient_id,
-			pagetype: 'patientalert',
+			pagetype: 'patientalerts',
 			userid: req.user.username,
 			username: req.user.firstName + ' ' + req.user.lastName,
 			membersince: req.user.created,
