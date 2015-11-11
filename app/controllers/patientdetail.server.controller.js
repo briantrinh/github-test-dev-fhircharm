@@ -60,7 +60,7 @@ exports.render = function(req, res) {
 			sessionTimeOut: 'yes',
 			sessionTimeOutDuration: config.sessionTimeOutDuration
 		});
-	} else if (category == 'alert') {
+	} else if (category == 'alerts') {
 		res.render('patientalerts', {
 			title: 'Patient Alerts',
 			menugroup: 'Alert',
