@@ -10,7 +10,12 @@
 
       <% include ./partials/header %>
       <% include ./partials/side %>
-
+	  <div id="alertbg" style="display:none;width:10000px; height:10000px;"></div>
+	  <dialog id="alertwindow" style='z-index:1000; display:none; position:absolute; top:25%; left:20%; width:750px;'>
+		<h3>Alerts:</h3>
+		<p id="alertmessage"></p>
+		<button id="exit">Confirm</button>
+	  </dialog>
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -28,7 +33,7 @@
 		  
         <!-- Main content -->
         <section class="content">
-
+			
 		  <div id="alert" class="callout callout-danger" style="display:none">
             <h4><i class="fa fa-warning"></i> Alerts:</h4>
             <p>This patient is in high risk of the following critical health problems:</p>
@@ -132,6 +137,27 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
+	  
+	var checkAlerts = function(display, value) {
+		var alerts = {
+			"Systolic blood pressure": 170,
+			"Diastolic blood pressure": 100,
+			"Heart rate": 120,
+			"Respiratory rate": 22,
+			"Body temperature": 102, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
+			"Body mass index (BMI) [Ratio]": 33
+		};
+		for (var param in alerts) {
+			if (param==display && value>alerts[param]) {
+				console.log(param);
+				return true;
+			}
+		}
+		return false;
+	};
+	var alerts = {};
+	var alert = false;
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
 			count: "50",
@@ -236,7 +262,6 @@
 		.done(function(data, lines){
 			console.log(data);
 			var ret = data.entry;
-			
 			var options = {
 				weekday: "long", year: "numeric", month: "short",
 				day: "numeric", hour: "2-digit", minute: "2-digit"
@@ -254,11 +279,32 @@
 				
 				var metricVal;
 				// check if it is string type value or quantity type value
-				if (obj.resource.valueString != null)
+				if (obj.resource.valueString != null) {
 					metricVal = obj.resource.valueString;
-				else
-					metricVal = obj.resource.valueQuantity.value +
-						obj.resource.valueQuantity.units;
+				} else {
+					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
+					// checking alerts
+					if (checkAlerts(display, obj.resource.valueQuantity.value)==true){
+						alert=true;
+						
+						if (alerts[display]==null) {
+							alerts[display] = {
+								id: idx,
+								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+								time: time
+							};
+						} else if (alerts[display]!=null) {
+							// if (Date.parse(alerts[display].time) < Date.parse(time)) {
+							if (parseInt(alerts[display].id) < parseInt(idx)) {
+								alerts[display] = {
+									id: idx,
+									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+									time: time
+								};
+							}
+						} 
+					}
+				}
 				lines = lines + "<tr>";
 				lines = lines + "<td>" + idx + "</td>";
 				lines = lines + "<td>" + display + "</td>";
@@ -271,6 +317,22 @@
 				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
+				var alertList = '';
+				for (var alert in alerts) {
+					alertList += alerts[alert].line;
+				}
+				if (alertList!='') {
+					$('#alert').css({display: 'inherit'});
+					$('#alertbg').css({display: 'block'});
+					$('#alert').append("<ul style='list-style-type:none;'>"+alertList+"</ul>");
+					$('#alertmessage').append("<ul style='list-style-type:none;'>"+alertList+"</ul>");
+					var dialog = document.getElementById('alertwindow');
+					dialog.show();
+					document.getElementById('exit').onclick = function() {
+						dialog.close();
+						$('#alertbg').css({display: 'none'});
+					};
+				}
 				console.log('you have reached the end');
 				$('#loading').hide();
 				$('#patients').DataTable({
@@ -282,9 +344,7 @@
 			alert("Ajax failed to fetch data");
 		});
 	}
-	  
       $(function () {
-
       		var lines;
 
 		//var pId = $.urlParam('id');
@@ -300,7 +360,6 @@
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(rUrl);
 		$.displayPatientObservations(rUrl, lines);
-		  
 		console.log('<%=alert%>');
       });
 		  

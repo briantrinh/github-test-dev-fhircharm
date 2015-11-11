@@ -23,19 +23,19 @@
             <li class=""><a href="/patientlist"><i class="fa fa-users"></i> <span>Patient List</span></a></li>
 			<%if (pagetype != 'patients') { %>
 			<li class="header">PATIENT</li>
-            <li class="treeview active">
+            <li class="treeview <% if (menugroup == 'Profile') { %>active<%}%>">
               <a href="#"><i class="fa fa-user-md"></i> <span>Profile</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
       			<li <% if (title == 'Patient Observations') { %>class="active"<%}%>><a href="/patientdetail/<%=id%>/observation">Observations</a></li>
                 <li <% if (title == 'Patient Conditions') { %>class="active"<%}%>><a href="/patientdetail/<%=id%>/condition">Conditions</a></li>
               </ul>
             </li>
-			<li class="treeview">
+			<li class="treeview <% if (menugroup == 'Medication') { %>active<%}%>">
               <a href="#"><i class="fa fa-medkit"></i> <span>Medication</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
-                <li <% if (title == 'Prescription') { %>class="active"<%}%>><a href="#">Prescription</a></li>
-                <li <% if (title == 'Dispense') { %>class="active"<%}%>><a href="#">Dispense</a></li>
-				<li <% if (title == 'Medication Database') { %>class="active"<%}%>><a href="#">Medication Database</a></li>
+                <li <% if (title == 'Patient Prescription') { %>class="active"<%}%>><a href="/patientdetail/<%=id%>/prescription">Prescription</a></li>
+                <li <% if (title == 'Patient Dispense') { %>class="active"<%}%>><a href="/patientdetail/<%=id%>/dispense">Dispense</a></li>
+				<li <% if (title == 'Patient Medication Database') { %>class="active"<%}%>><a href="#">Medication Database</a></li>
               </ul>
             </li>
 			<li <% if (title == 'Diagnostics') { %>class="active"<%}%>><a href="#"><i class="fa fa-stethoscope"></i> <span>Diagnostics</span></a></li>

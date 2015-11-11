@@ -13,6 +13,7 @@ exports.render = function(req, res) {
 		
 		res.render('patientobservation', {
 			title: 'Patient Observations',
+			menugroup: 'Profile',
 			id: patient_id,
 			pagetype: 'patientobservation',
 			userid: req.user.username,
@@ -26,6 +27,7 @@ exports.render = function(req, res) {
 	} else if (category == 'condition') {
 		res.render('patientcondition', {
 			title: 'Patient Conditions',
+			menugroup: 'Profile',
 			id: patient_id,
 			pagetype: 'patientcondition',
 			userid: req.user.username,
@@ -37,6 +39,7 @@ exports.render = function(req, res) {
 	} else if (category == 'prescription') {
 		res.render('patientprescription', {
 			title: 'Patient Prescription',
+			menugroup: 'Medication',
 			id: patient_id,
 			pagetype: 'patientprescription',
 			userid: req.user.username,
@@ -48,19 +51,9 @@ exports.render = function(req, res) {
 	} else if (category == 'dispense') {
 		res.render('patientdispense', {
 			title: 'Patient Prescription Dispense',
+			menugroup: 'Medication',
 			id: patient_id,
 			pagetype: 'patientdispense',
-			userid: req.user.username,
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});
-	} else if (category == 'alert') {
-		res.render('patientalert', {
-			title: 'Patient Alert',
-			id: patient_id,
-			pagetype: 'patientalert',
 			userid: req.user.username,
 			username: req.user.firstName + ' ' + req.user.lastName,
 			membersince: req.user.created,
