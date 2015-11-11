@@ -60,6 +60,18 @@ exports.render = function(req, res) {
 			sessionTimeOut: 'yes',
 			sessionTimeOutDuration: config.sessionTimeOutDuration
 		});
+	} else if (category == 'alert') {
+		res.render('patientalerts', {
+			title: 'Patient Alerts',
+			menugroup: 'Medication',
+			id: patient_id,
+			pagetype: 'patientalerts',
+			userid: req.user.username,
+			username: req.user.firstName + ' ' + req.user.lastName,
+			membersince: req.user.created,
+			sessionTimeOut: 'yes',
+			sessionTimeOutDuration: config.sessionTimeOutDuration
+		});
 	}
 };
 
