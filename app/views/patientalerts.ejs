@@ -389,12 +389,6 @@
 						} 
 					}
 				}
-				lines = lines + "<tr>";
-				lines = lines + "<td>" + idx + "</td>";
-				lines = lines + "<td>" + display + "</td>";
-				lines = lines + "<td>" + metricVal + "</td>";
-				lines = lines + "<td>" + localTime.toLocaleTimeString("en-Us",options) + "</td>";
-				lines = lines + "</tr>";
 			};
 			
 			if(data.link[1].relation == "next"){
@@ -434,9 +428,8 @@
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(rUrl);
 		$.displayPatientObservations(rUrl, lines);
-
-		console.log('<%=alert%>');
 	})
+	
 	  var sessionTimeRemaining = <%=sessionTimeOutDuration %>;
     </script>    
 	<% include ./partials/bottom %>	
