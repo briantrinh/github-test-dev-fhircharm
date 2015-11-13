@@ -240,7 +240,35 @@
 		}
 		return false;
 	};
-	var alerts = {};
+	var checkLowAlerts = function(display, value) {
+		var alerts_low_max = {
+			"Systolic blood pressure": 140,
+			"Diastolic blood pressure": 90,
+			"Heart rate": 100,
+			"Respiratory rate": 18,
+			"Body temperature": 101, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
+			"Body mass index (BMI) [Ratio]": 29
+		};
+		var alerts_low_min = {
+			"Systolic blood pressure": 120,
+			"Diastolic blood pressure": 80,
+			"Heart rate": 90,
+			"Respiratory rate": 16,
+			"Body temperature": 99.1, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 200,
+			"Body mass index (BMI) [Ratio]": 25
+		};
+		for (var param in alerts) {
+			if (param==display && value<=alerts_low_max[param] && value>alerts_low_min[param]) {
+				console.log(param);
+				return true;
+			}
+		}
+		return false;
+	};
+	var mediumalerts = {};
+	var lowalerts = {};
 	var alert = false;
 	
 	  var fhirConfig = {
@@ -372,15 +400,34 @@
 					if (checkMediumAlerts(display, obj.resource.valueQuantity.value)==true){
 						alert=true;
 						// Check to see if it is the latest reading
-						if (alerts[display]==null) {
-							alerts[display] = {
+						if (mediumalerts[display]==null) {
+							mediumalerts[display] = {
 								id: idx,
 								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
 								time: time
 							};
-						} else if (alerts[display]!=null) {
-							if (parseInt(alerts[display].id) < parseInt(idx)) {
-								alerts[display] = {
+						} else if (mediumalerts[display]!=null) {
+							if (parseInt(mediumalerts[display].id) < parseInt(idx)) {
+								mediumalerts[display] = {
+									id: idx,
+									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+									time: time
+								};
+							}
+						} 
+					}
+					if (checkLowAlerts(display, obj.resource.valueQuantity.value)==true){
+						alert=true;
+						// Check to see if it is the latest reading
+						if (lowalerts[display]==null) {
+							lowalerts[display] = {
+								id: idx,
+								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+								time: time
+							};
+						} else if (lowalerts[display]!=null) {
+							if (parseInt(lowalerts[display].id) < parseInt(idx)) {
+								lowalerts[display] = {
 									id: idx,
 									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
 									time: time
@@ -389,19 +436,26 @@
 						} 
 					}
 				}
+				
 			};
 			
 			if(data.link[1].relation == "next"){
 				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
-				var alertList = '';
-				for (var alert in alerts) {
-					alertList += alerts[alert].line;
+				var mediumalertList = '';
+				var lowalertList = '';
+				for (var alert in mediumalerts) {
+					mediumalertList += mediumalerts[alert].line;
+				}
+				for (var alert in lowalerts) {
+					lowalertList += lowalerts[alert].line;
 				}
 				if (alertList!='') {
 					$('#mediumalerts').css({display: 'block'});
-					$('#mediumalerts').append("<ul style='list-style-type:none;'>"+alertList+"</ul>");
+					$('#mediumalerts').append("<ul style='list-style-type:none;'>"+mediumalertList+"</ul>");
+					$('#lowalerts').css({display: 'block'});
+					$('#lowalerts').append("<ul style='list-style-type:none;'>"+lowalertList+"</ul>");
 				}
 				console.log('you have reached the end');
 			}
