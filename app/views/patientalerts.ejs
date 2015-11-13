@@ -449,11 +449,11 @@
 				for (var param in latestalerts) {
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
-						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>',;
+						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
 					}
 					// check to see if it triggered low alerts
 					else if (checkLowAlerts(param, latestalerts[param].val)==true){
-						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>',;
+						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
 					}
 
 				}
