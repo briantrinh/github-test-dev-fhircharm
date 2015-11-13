@@ -451,9 +451,11 @@
 				for (var alert in lowalerts) {
 					lowalertList += lowalerts[alert].line;
 				}
-				if (alertList!='') {
+				if (mediumalertList!='') {
 					$('#mediumalerts').css({display: 'block'});
 					$('#mediumalerts').append("<ul style='list-style-type:none;'>"+mediumalertList+"</ul>");
+				}
+				if (lowalertList!='') {
 					$('#lowalerts').css({display: 'block'});
 					$('#lowalerts').append("<ul style='list-style-type:none;'>"+lowalertList+"</ul>");
 				}
