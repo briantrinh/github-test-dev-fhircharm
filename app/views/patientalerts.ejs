@@ -417,12 +417,14 @@
 				
 				var metricVal;
 				// check if it is string type value or quantity type value
+				console.log(display);
 				if (obj.resource.valueString != null) {
+					console.log('value is a string');
 					metricVal = obj.resource.valueString;
 				} else {
+					console.log('value is a quantity');
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// check to see if it is part of the alerts
-					console.log(display);
 					if (checkLatestAlerts(display) == true) {
 						// if biometric has not been recorded yet
 						if (latestalerts[display]==null) {
