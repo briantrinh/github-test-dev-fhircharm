@@ -140,11 +140,11 @@
 				  <td>22+</td>
 				</tr>
 				<tr>
-				  <td>Temperature (Celsius)</td>
-				  <td>97.8-99</td>
-				  <td>99.1-101</td>
-				  <td>101-102</td>
-				  <td>102+</td>
+				  <td>Body Temperature (Celsius)</td>
+				  <td>36.6-37.2</td>
+				  <td>37.3-38.3</td>
+				  <td>38.3-38.9</td>
+				  <td>38.9+</td>
 				</tr>
 				<tr>
 				  <td>Cholesterol (mg/dL)</td>
@@ -219,7 +219,7 @@
 			"Diastolic blood pressure": 100,
 			"Heart rate": 120,
 			"Respiratory rate": 22,
-			"Body temperature": 38.88, 
+			"Body temperature": 38.9, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
 			"Body mass index (BMI) [Ratio]": 33
 		};
@@ -228,7 +228,7 @@
 			"Diastolic blood pressure": 90,
 			"Heart rate": 100,
 			"Respiratory rate": 18,
-			"Body temperature": 38.33, 
+			"Body temperature": 38.3, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 30
 		};
@@ -246,7 +246,7 @@
 			"Diastolic blood pressure": 90,
 			"Heart rate": 100,
 			"Respiratory rate": 18,
-			"Body temperature": 38.33, 
+			"Body temperature": 38.3, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 29
 		};
@@ -255,7 +255,7 @@
 			"Diastolic blood pressure": 80,
 			"Heart rate": 90,
 			"Respiratory rate": 16,
-			"Body temperature": 37.27, 
+			"Body temperature": 37.3, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 200,
 			"Body mass index (BMI) [Ratio]": 25
 		};
@@ -269,7 +269,6 @@
 	};
 	var mediumalerts = {};
 	var lowalerts = {};
-	var alert = false;
 	
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
@@ -398,7 +397,7 @@
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// checking alerts
 					if (checkMediumAlerts(display, obj.resource.valueQuantity.value)==true){
-						alert=true;
+						//console.log("Med Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
 						// Check to see if it is the latest reading
 						if (mediumalerts[display]==null) {
 							mediumalerts[display] = {
@@ -417,7 +416,7 @@
 						} 
 					}
 					if (checkLowAlerts(display, obj.resource.valueQuantity.value)==true){
-						alert=true;
+						//console.log("Low Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
 						// Check to see if it is the latest reading
 						if (lowalerts[display]==null) {
 							lowalerts[display] = {
@@ -459,7 +458,6 @@
 					$('#lowalerts').css({display: 'block'});
 					$('#lowalerts').append("<ul style='list-style-type:none;'>"+lowalertList+"</ul>");
 				}
-				console.log('you have reached the end');
 			}
 		})
 		.fail(function(){
