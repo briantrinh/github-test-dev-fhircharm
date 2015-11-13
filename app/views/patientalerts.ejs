@@ -147,14 +147,14 @@
 				  <td>38.9+</td>
 				</tr>
 				<tr>
-				  <td>Cholesterol (mg/dL)</td>
+				  <td>Cholesterol [Mass/volume] in Serum or Plasma</td>
 				  <td>&lt 200</td>
 				  <td>200-239</td>
 				  <td>240-260</td>
 				  <td>260+</td>
 				</tr>
 				<tr>
-				  <td>BMI</td>
+				  <td>Body mass index (BMI) [Ratio]</td>
 				  <td>18.5-24.9</td>
 				  <td>25-29</td>
 				  <td>30-33</td>
@@ -448,23 +448,28 @@
 				console.log(latestalerts);
 				var mediumalertList = '';
 				var lowalertList = '';
+				
 				for (var param in latestalerts) {
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
+						console.log('Medium Trigger: ', param);
 						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
 					}
 					// check to see if it triggered low alerts
 					else if (checkLowAlerts(param, latestalerts[param].val)==true){
+						console.log('Low Trigger: ', param);
 						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
 					}
 
 				}
 				
 				if (mediumalertList!='') {
+					console.log('Medium List is not empty');
 					$('#mediumalerts').css({display: 'block'});
 					$('#mediumalerts').append("<ul style='list-style-type:none;'>"+mediumalertList+"</ul>");
 				}
 				if (lowalertList!='') {
+					console.log('Low List is not empty');
 					$('#lowalerts').css({display: 'block'});
 					$('#lowalerts').append("<ul style='list-style-type:none;'>"+lowalertList+"</ul>");
 				}
