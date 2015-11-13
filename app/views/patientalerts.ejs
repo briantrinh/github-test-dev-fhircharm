@@ -418,13 +418,13 @@
 					if (checkLowAlerts(display, obj.resource.valueQuantity.value)==true){
 						//console.log("Low Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
 						// Check to see if it is the latest reading
-						if (lowalerts[display]==null) {
+						if (mediumalerts[display] == null && lowalerts[display]==null) {
 							lowalerts[display] = {
 								id: idx,
 								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
 								time: time
 							};
-						} else if (lowalerts[display]!=null) {
+						} else if (mediumalerts[display] == null && lowalerts[display]!=null) {
 							if (parseInt(lowalerts[display].id) < parseInt(idx)) {
 								lowalerts[display] = {
 									id: idx,
