@@ -422,6 +422,7 @@
 				} else {
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// check to see if it is part of the alerts
+					console.log(display);
 					if (checkLatestAlerts(display) == true) {
 						// if biometric has not been recorded yet
 						if (latestalerts[display]==null) {
@@ -459,12 +460,10 @@
 				for (var param in latestalerts) {
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
-						console.log('Medium Trigger: ', param);
 						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
 					// check to see if it triggered low alerts
 					else if (checkLowAlerts(param, latestalerts[param].val)==true){
-						console.log('Low Trigger: ', param);
 						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
 
