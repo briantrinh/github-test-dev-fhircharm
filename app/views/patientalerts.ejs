@@ -450,6 +450,8 @@
 				var lowalertList = '';
 				
 				for (var param in latestalerts) {
+					console.log(param);
+					console.log(latestalerts[param].val);
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
 						console.log('Medium Trigger: ', param);
