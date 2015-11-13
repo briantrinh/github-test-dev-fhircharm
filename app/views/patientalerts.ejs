@@ -212,15 +212,16 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
+	  
 	var checkLatestAlerts = function(display) {
 		var alerts = {
-			"Systolic blood pressure",
-			"Diastolic blood pressure",
-			"Heart rate",
-			"Respiratory rate",
-			"Body temperature", 
-			"Cholesterol [Mass/volume] in Serum or Plasma",
-			"Body mass index (BMI) [Ratio]"
+			"Systolic blood pressure": 170,
+			"Diastolic blood pressure": 100,
+			"Heart rate": 120,
+			"Respiratory rate": 22,
+			"Body temperature": 38.9, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
+			"Body mass index (BMI) [Ratio]": 33
 		};
 		for (var param in alerts) {
 			if (param==display) {
@@ -444,6 +445,7 @@
 				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
+				console.log(latestalerts);
 				for (var param in latestalerts) {
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
