@@ -422,7 +422,7 @@
 						if (latestalerts[display]==null) {
 							latestalerts[display] = {
 								id: idx,
-								val: metricVal
+								val: metricVal,
 								time: time
 							};
 						// else if it has been recorded
@@ -431,7 +431,7 @@
 							if (parseInt(latestalerts[display].id) < parseInt(idx)) {
 								latestalerts[display] = {
 									id: idx,
-									val: metricVal
+									val: metricVal,
 									time: time
 								};
 							}
