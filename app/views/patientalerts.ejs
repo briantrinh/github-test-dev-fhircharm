@@ -422,7 +422,8 @@
 						if (latestalerts[display]==null) {
 							latestalerts[display] = {
 								id: idx,
-								val: metricVal,
+								val: obj.resource.valueQuantity.value,
+								measure: metricVal,
 								time: time
 							};
 						// else if it has been recorded
@@ -431,7 +432,8 @@
 							if (parseInt(latestalerts[display].id) < parseInt(idx)) {
 								latestalerts[display] = {
 									id: idx,
-									val: metricVal,
+									val: obj.resource.valueQuantity.value,
+									measure: metricVal,
 									time: time
 								};
 							}
@@ -455,12 +457,12 @@
 					// check to see if it triggered medium alerts
 					if (checkMediumAlerts(param, latestalerts[param].val)==true){
 						console.log('Medium Trigger: ', param);
-						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
+						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
 					// check to see if it triggered low alerts
 					else if (checkLowAlerts(param, latestalerts[param].val)==true){
 						console.log('Low Trigger: ', param);
-						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>';
+						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
 
 				}
