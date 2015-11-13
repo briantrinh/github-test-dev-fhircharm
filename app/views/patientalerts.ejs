@@ -212,19 +212,19 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
-	var checkHighAlerts = function(display, value) {
-		var alerts_high = {
-			"Systolic blood pressure": 170,
-			"Diastolic blood pressure": 100,
-			"Heart rate": 120,
-			"Respiratory rate": 22,
-			"Body temperature": 38.9, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
-			"Body mass index (BMI) [Ratio]": 33
+	var checkLatestAlerts = function(display) {
+		var alerts = {
+			"Systolic blood pressure",
+			"Diastolic blood pressure",
+			"Heart rate",
+			"Respiratory rate",
+			"Body temperature", 
+			"Cholesterol [Mass/volume] in Serum or Plasma",
+			"Body mass index (BMI) [Ratio]"
 		};
-		for (var param in alerts_high) {
-			if (param==display && value<alerts_high[param]) {
-				console.log(param);
+		for (var param in alerts) {
+			if (param==display) {
+				//console.log(param);
 				return true;
 			}
 		}
@@ -284,6 +284,8 @@
 		}
 		return false;
 	};
+	
+	var latestalerts = {};
 	var mediumalerts = {};
 	var lowalerts = {};
 	
@@ -412,44 +414,27 @@
 					metricVal = obj.resource.valueString;
 				} else {
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
-					// checking alerts
-					if (checkMediumAlerts(display, obj.resource.valueQuantity.value)==true && checkHighAlerts(display, obj.resource.valueQuantity.value)==false){
-						//console.log("Med Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
-						// Check to see if it is the latest reading
-						if (mediumalerts[display]==null) {
-							mediumalerts[display] = {
+					
+					// check to see if it is part of the alerts
+					if (checkLatestAlerts(display) == true) {
+						// if biometric has not been recorded yet
+						if (latestalerts[display]==null) {
+							latestalerts[display] = {
 								id: idx,
-								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+								val: metricVal
 								time: time
 							};
-						} else if (mediumalerts[display]!=null) {
-							if (parseInt(mediumalerts[display].id) < parseInt(idx)) {
-								mediumalerts[display] = {
+						// else if it has been recorded
+						} else if (latestalerts[display]!=null){
+							// check to see if it is the latest reading
+							if (parseInt(latestalerts[display].id) < parseInt(idx)) {
+								latestalerts[display] = {
 									id: idx,
-									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+									val: metricVal
 									time: time
 								};
 							}
-						} 
-					}
-					if (checkLowAlerts(display, obj.resource.valueQuantity.value)==true){
-						//console.log("Low Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
-						// Check to see if it is the latest reading
-						if (mediumalerts[display] == null && lowalerts[display]==null) {
-							lowalerts[display] = {
-								id: idx,
-								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
-								time: time
-							};
-						} else if (mediumalerts[display] == null && lowalerts[display]!=null) {
-							if (parseInt(lowalerts[display].id) < parseInt(idx)) {
-								lowalerts[display] = {
-									id: idx,
-									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
-									time: time
-								};
-							}
-						} 
+						}
 					}
 				}
 				
@@ -459,14 +444,18 @@
 				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
-				var mediumalertList = '';
-				var lowalertList = '';
-				for (var alert in mediumalerts) {
-					mediumalertList += mediumalerts[alert].line;
+				for (var param in latestalerts) {
+					// check to see if it triggered medium alerts
+					if (checkMediumAlerts(param, latestalerts[param].val)==true){
+						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>',;
+					}
+					// check to see if it triggered low alerts
+					else if (checkLowAlerts(param, latestalerts[param].val)==true){
+						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val +'</li>',;
+					}
+
 				}
-				for (var alert in lowalerts) {
-					lowalertList += lowalerts[alert].line;
-				}
+				
 				if (mediumalertList!='') {
 					$('#mediumalerts').css({display: 'block'});
 					$('#mediumalerts').append("<ul style='list-style-type:none;'>"+mediumalertList+"</ul>");
