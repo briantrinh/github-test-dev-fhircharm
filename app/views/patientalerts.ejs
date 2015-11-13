@@ -212,7 +212,24 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
-	  
+	var checkHighAlerts = function(display, value) {
+		var alerts_high = {
+			"Systolic blood pressure": 170,
+			"Diastolic blood pressure": 100,
+			"Heart rate": 120,
+			"Respiratory rate": 22,
+			"Body temperature": 38.9, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
+			"Body mass index (BMI) [Ratio]": 33
+		};
+		for (var param in alerts_high) {
+			if (param==display && value<alerts_high[param]) {
+				console.log(param);
+				return true;
+			}
+		}
+		return false;
+	};
 	var checkMediumAlerts = function(display, value) {
 		var alerts_medium_max = {
 			"Systolic blood pressure": 170,
@@ -396,7 +413,7 @@
 				} else {
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// checking alerts
-					if (checkMediumAlerts(display, obj.resource.valueQuantity.value)==true){
+					if (checkMediumAlerts(display, obj.resource.valueQuantity.value)==true && checkHighAlerts(display, obj.resource.valueQuantity.value)==false){
 						//console.log("Med Trigger - Biometric:", display, '; Value:', obj.resource.valueQuantity.value);
 						// Check to see if it is the latest reading
 						if (mediumalerts[display]==null) {
