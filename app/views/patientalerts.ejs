@@ -140,7 +140,7 @@
 				  <td>22+</td>
 				</tr>
 				<tr>
-				  <td>Temperature (Fahrenheit)</td>
+				  <td>Temperature (Celsius)</td>
 				  <td>97.8-99</td>
 				  <td>99.1-101</td>
 				  <td>101-102</td>
@@ -219,7 +219,7 @@
 			"Diastolic blood pressure": 100,
 			"Heart rate": 120,
 			"Respiratory rate": 22,
-			"Body temperature": 102, 
+			"Body temperature": 38.88, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
 			"Body mass index (BMI) [Ratio]": 33
 		};
@@ -228,11 +228,11 @@
 			"Diastolic blood pressure": 90,
 			"Heart rate": 100,
 			"Respiratory rate": 18,
-			"Body temperature": 101, 
+			"Body temperature": 38.33, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 30
 		};
-		for (var param in alerts) {
+		for (var param in alerts_medium_max) {
 			if (param==display && value<=alerts_medium_max[param] && value>alerts_medium_min[param]) {
 				console.log(param);
 				return true;
@@ -246,7 +246,7 @@
 			"Diastolic blood pressure": 90,
 			"Heart rate": 100,
 			"Respiratory rate": 18,
-			"Body temperature": 101, 
+			"Body temperature": 38.33, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 29
 		};
@@ -255,11 +255,11 @@
 			"Diastolic blood pressure": 80,
 			"Heart rate": 90,
 			"Respiratory rate": 16,
-			"Body temperature": 99.1, 
+			"Body temperature": 37.27, 
 			"Cholesterol [Mass/volume] in Serum or Plasma": 200,
 			"Body mass index (BMI) [Ratio]": 25
 		};
-		for (var param in alerts) {
+		for (var param in alerts_low_max) {
 			if (param==display && value<=alerts_low_max[param] && value>alerts_low_min[param]) {
 				console.log(param);
 				return true;
