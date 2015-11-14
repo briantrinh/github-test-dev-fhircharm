@@ -147,13 +147,6 @@
 				  <td>38.9+</td>
 				</tr>
 				<tr>
-				  <td>Cholesterol [Mass/volume] in Serum or Plasma</td>
-				  <td>&lt 200</td>
-				  <td>200-239</td>
-				  <td>240-260</td>
-				  <td>260+</td>
-				</tr>
-				<tr>
 				  <td>Body mass index (BMI) [Ratio]</td>
 				  <td>18.5-24.9</td>
 				  <td>25-29</td>
@@ -220,17 +213,10 @@
 			"Heart rate": 120,
 			"Respiratory rate": 22,
 			"Body temperature": 38.9, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
 			"Body mass index (BMI) [Ratio]": 33
 		};
-		if(display == "Cholesterol [Mass/volume] in Serum or Plasma"){
-			console.log('Cholesterol was read');
-		}
 		for (var param in alerts) {
 			if (param==display) {
-				if(display == "Cholesterol [Mass/volume] in Serum or Plasma"){
-					console.log('Cholesterol was detected');
-				}
 				//console.log(param);
 				return true;
 			}
@@ -244,7 +230,6 @@
 			"Heart rate": 120,
 			"Respiratory rate": 22,
 			"Body temperature": 38.9, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
 			"Body mass index (BMI) [Ratio]": 33
 		};
 		var alerts_medium_min = {
@@ -253,7 +238,6 @@
 			"Heart rate": 100,
 			"Respiratory rate": 18,
 			"Body temperature": 38.3, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 30
 		};
 		for (var param in alerts_medium_max) {
@@ -271,7 +255,6 @@
 			"Heart rate": 100,
 			"Respiratory rate": 18,
 			"Body temperature": 38.3, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 240,
 			"Body mass index (BMI) [Ratio]": 29
 		};
 		var alerts_low_min = {
@@ -280,7 +263,6 @@
 			"Heart rate": 90,
 			"Respiratory rate": 16,
 			"Body temperature": 37.3, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 200,
 			"Body mass index (BMI) [Ratio]": 25
 		};
 		for (var param in alerts_low_max) {
@@ -417,12 +399,9 @@
 				
 				var metricVal;
 				// check if it is string type value or quantity type value
-				console.log(display);
 				if (obj.resource.valueString != null) {
-					console.log('value is a string');
 					metricVal = obj.resource.valueString;
 				} else {
-					console.log('value is a quantity');
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// check to see if it is part of the alerts
 					if (checkLatestAlerts(display) == true) {
