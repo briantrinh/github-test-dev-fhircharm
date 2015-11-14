@@ -5,9 +5,13 @@ exports.render = function(req, res) {
 	
 	req.session.lastVisit = new Date();
 	
-	req.session.returnTo = req.url;	
-
-	if (!req.user) res.redirect('/user/signin');
+	if (!req.user) return res.redirect('/user/signin');
+	
+	var returnURL = req.query.returnURL;
+	
+	console.log('returnURL = ' + returnURL);
+	
+	req.session.returnTo = returnURL;	
 	
 	console.log('username: ' + req.user.username);
 	

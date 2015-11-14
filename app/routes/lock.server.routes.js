@@ -3,6 +3,5 @@ var lock = require('../controllers/lock.server.controller'),
 		
 module.exports = function(app) {
 	
-	app.get('/user/lock', lock.render);
-	
+	app.get('/user/lock/', lock.render);
 };

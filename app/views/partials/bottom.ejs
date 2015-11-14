@@ -12,7 +12,7 @@ catch(e){window.attachEvent("onload", $buo_f)}
 <script>
 function sessionTimeOut () {
   console.log("Your session has been timed out.");
-  $(location).attr('href','/user/lock')
+  $(location).attr('href','/user/lock/?returnURL=' + window.location.pathname);
 }
 
 if (window.location.pathname.indexOf('/user/') == -1 ) {

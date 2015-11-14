@@ -6,6 +6,8 @@ exports.render = function(req, res) {
 	
 	console.log('username: ' + req.user.username);
 	
+	req.session.returnTo = req.url;	
+	
 	Patient.find({}, function(err, patients) {
 		if (err) {
 			return next(err);			

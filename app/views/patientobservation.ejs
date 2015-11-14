@@ -322,8 +322,9 @@
 					alertList += alerts[alert].line;
 				}
 				if (alertList!='') {
-					$('#alert').css({display: 'inherit'});
+					$('#alert').css({display: 'block'});
 					$('#alertbg').css({display: 'block'});
+					$('#alertwindow').css({display: 'block'});
 					$('#alert').append("<ul style='list-style-type:none;'>"+alertList+"</ul>");
 					$('#alertmessage').append("<ul style='list-style-type:none;'>"+alertList+"</ul>");
 					var dialog = document.getElementById('alertwindow');
@@ -331,6 +332,7 @@
 					document.getElementById('exit').onclick = function() {
 						dialog.close();
 						$('#alertbg').css({display: 'none'});
+						$('#alertwindow').css({display: 'none'});
 					};
 				}
 				console.log('you have reached the end');

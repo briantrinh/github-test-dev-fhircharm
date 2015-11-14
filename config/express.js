@@ -27,7 +27,7 @@ module.exports = function() {
 		rolling: true,
 		resave: true,
 		secret: config.sessionSecret,
-        cookie: { maxAge : 60000 } //1 Hour   3600000
+        cookie: { maxAge : 3600000 } //1 Hour   3600000
 	}));
 	
 	app.set('views', './app/views');
