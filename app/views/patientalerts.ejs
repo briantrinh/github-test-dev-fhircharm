@@ -217,7 +217,6 @@
 		};
 		for (var param in alerts) {
 			if (param==display) {
-				//console.log(param);
 				return true;
 			}
 		}
@@ -242,7 +241,6 @@
 		};
 		for (var param in alerts_medium_max) {
 			if (param==display && value<=alerts_medium_max[param] && value>alerts_medium_min[param]) {
-				console.log(param);
 				return true;
 			}
 		}
@@ -267,7 +265,6 @@
 		};
 		for (var param in alerts_low_max) {
 			if (param==display && value<=alerts_low_max[param] && value>alerts_low_min[param]) {
-				console.log(param);
 				return true;
 			}
 		}
