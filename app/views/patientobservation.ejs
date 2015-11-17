@@ -149,9 +149,15 @@
 		.done(function(data, status){
 			var ret = data;
 			console.log(ret);
-			/* Create a patient list */
-			if(ret[0].onWatch){
-				onWatch = true;
+			// Browse through all patients
+			for (var i = 0; i < ret.lenght; i++) {
+				// If patient is found
+				if(ret[i].id == patientID) {
+					// Check to see if onWatch
+					if(ret[i].onWatch){
+						onWatch = true;
+					}
+				}
 			}
         	})
 		.fail(function(){
