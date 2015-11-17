@@ -299,15 +299,26 @@
 	// extract patient observation information
 
 	$.displayPatientObservations = function(rUrl, lines){
-		// get the cached _getpages
-		$.ajax({
-			type: 'GET',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'JSON',
-			url: rUrl
-		})
-		.done(function(data, lines){
-			console.log(data);
+		// get the cached_getpages
+		$.when(
+			$.ajax({
+				type: 'GET',
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'JSON',
+				url: rUrl
+			}),
+			$.ajax({
+				type: 'GET',
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'JSON',
+				url: "/patients";
+			})
+		).done(function(data1, data2, lines){
+			console.log('Here is data1');
+			console.log(data1);
+			console.log('Here is data2');
+			console.log(data2);
+			
 			var ret = data.entry;
 			var options = {
 				weekday: "long", year: "numeric", month: "short",
@@ -407,12 +418,12 @@
 		//var pId = $.urlParam('id');
 		var pId = <%=id%>;
 		
-		if(checkOnWatch(pId)==true){
+		/*if(checkOnWatch(pId)==true){
 			console.log('Patient is onWatch');
 		}
 		else{
 			console.log('Patient is not onWatch');
-		}
+		}*/
 		
 		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
