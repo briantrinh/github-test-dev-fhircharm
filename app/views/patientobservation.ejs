@@ -433,7 +433,7 @@
 			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(oUrl);
-    		var pUrl = "/patients/" + pId
+    		var pUrl = "http://fhircharm.herokuapp.com/patient/" + pId
     		console.log(pUrl);
 		$.displayPatientObservations(oUrl, lines, pUrl);
 		console.log('<%=alert%>');
