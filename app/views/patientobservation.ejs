@@ -136,8 +136,9 @@
 	  
 	<!-- page script -->
     <script>
-	  // FHIR server connection setting
+	// FHIR server connection setting
         var checkOnWatch = function(patientID) {
+        	console.log('Just arrived in the checkOnWatch function');
 		var rUrl = "/patients";
 		var onWatch = false;
 		$.ajax({
@@ -148,6 +149,7 @@
 		})
 		.done(function(data, status){
 			var ret = data;
+			console.log('List of all patients');
 			console.log(ret);
 			// Browse through all patients
 			for (var i = 0; i < ret.length; i++) {
