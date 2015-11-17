@@ -429,12 +429,11 @@
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 		console.log(rUrl);	
 		$.displayPatientGI(rUrl, pId);		
-
 		var oUrl = fhirConfig.serviceUrl + "Observation?patient=" + pId +
 			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
 			"&_pretty=" + fhirConfig.pretty;
     		console.log(oUrl);
-    		var pUrl = "/patient/" + pId
+    		var pUrl = "/patients/" + pId
     		console.log(pUrl);
 		$.displayPatientObservations(oUrl, lines, pUrl);
 		console.log('<%=alert%>');
