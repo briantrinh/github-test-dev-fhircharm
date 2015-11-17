@@ -137,7 +137,29 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
-
+        var checkOnWatch = function(patientID) {
+		var rUrl = "/patients";
+		var onWatch = false;
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'JSON',
+			url: rUrl
+		})
+		.done(function(data, status){
+			var ret = data;
+			console.log(ret);
+			/* Create a patient list */
+			if(ret[0].onWatch){
+				onWatch = true;
+			}
+        	})
+		.fail(function(){
+			alert("Ajax failed to fetch data");
+		});
+		return onWatch;
+        }
+        
 	var checkLatestAlerts = function(display) {
 		var alerts = {
 			"Systolic blood pressure": 170,
@@ -376,6 +398,13 @@
 
 		//var pId = $.urlParam('id');
 		var pId = <%=id%>;
+		
+		if(checkOnWatch(pId)==true){
+			console.log('Patient is onWatch');
+		}
+		else{
+			console.log('Patient is not onWatch');
+		}
 		
 		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
