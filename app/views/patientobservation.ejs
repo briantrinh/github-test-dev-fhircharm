@@ -346,7 +346,7 @@
 			};
 			$('#patient_data').append(lines);
 			if(observationCall[0].link[1].relation == "next"){
-				$.displayPatientObservations(data.link[1].url, lines);
+				$.displayPatientObservations(observationCall[0].link[1].url, lines);
 			}
 			else{
 				var alertList = '';
