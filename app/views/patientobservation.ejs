@@ -351,13 +351,23 @@
 			else{
 				var alertList = '';
 				
-				for (var param in latestalerts) {
-					// check to see if it triggered high alerts
-					if (checkAlerts(param, latestalerts[param].val)==true){
+				
+				if(patientCall[0].onWatch){
+					console.log('Patient is onWatch');
+					for (var param in latestalerts) {
 						alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
 				}
-				
+				else{
+					for (var param in latestalerts) {
+						// check to see if it triggered high alerts
+						if (checkAlerts(param, latestalerts[param].val)==true){
+							alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+						}
+					}
+				}
+
+				}
 				if (alertList!='') {
 					$('#alert').css({display: 'block'});
 					$('#alertbg').css({display: 'block'});
