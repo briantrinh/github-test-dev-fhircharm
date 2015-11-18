@@ -357,8 +357,7 @@
 					for (var param in latestalerts) {
 						alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 					}
-				}
-				else{
+				} else{
 					for (var param in latestalerts) {
 						// check to see if it triggered high alerts
 						if (checkAlerts(param, latestalerts[param].val)==true){
@@ -366,8 +365,7 @@
 						}
 					}
 				}
-
-				}
+				
 				if (alertList!='') {
 					$('#alert').css({display: 'block'});
 					$('#alertbg').css({display: 'block'});
