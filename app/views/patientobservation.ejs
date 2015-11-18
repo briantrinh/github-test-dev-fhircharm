@@ -136,54 +136,7 @@
 	  
 	<!-- page script -->
     <script>
-	// FHIR server connection setting
-        var checkOnWatch = function(patientID) {
-        	console.log('Just arrived in the checkOnWatch function');
-		var rUrl = "/patients";
-		var onWatch = false;
-		$.ajax({
-			type: 'GET',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'JSON',
-			url: rUrl
-		})
-		.done(function(data, status){
-			var ret = data;
-			console.log('List of all patients');
-			console.log(ret);
-			// Browse through all patients
-			for (var i = 0; i < ret.length; i++) {
-				// If patient is found
-				if(ret[i].id == patientID) {
-					// Check to see if onWatch
-					if(ret[i].onWatch){
-						onWatch = true;
-					}
-				}
-			}
-        	})
-		.fail(function(){
-			alert("Ajax failed to fetch data");
-		});
-		return onWatch;
-        }
-        
-	var checkLatestAlerts = function(display) {
-		var alerts = {
-			"Systolic blood pressure": 170,
-			"Diastolic blood pressure": 100,
-			"Heart rate": 120,
-			"Respiratory rate": 22,
-			"Body temperature": 38.9, 
-			"Body mass index (BMI) [Ratio]": 33
-		};
-		for (var param in alerts) {
-			if (param==display) {
-				return true;
-			}
-		}
-		return false;
-	};
+	  // FHIR server connection setting
 	  
 	var checkAlerts = function(display, value) {
 		var alerts = {
@@ -191,20 +144,20 @@
 			"Diastolic blood pressure": 100,
 			"Heart rate": 120,
 			"Respiratory rate": 22,
-			"Body temperature": 102,
+			"Body temperature": 102, 
+			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
 			"Body mass index (BMI) [Ratio]": 33
 		};
 		for (var param in alerts) {
 			if (param==display && value>alerts[param]) {
+				console.log(param);
 				return true;
 			}
 		}
 		return false;
 	};
-	
-	var latestalerts = {};
 	var alerts = {};
-
+	var alert = false;
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
 			count: "50",
@@ -298,28 +251,17 @@
 	  
 	// extract patient observation information
 
-	$.displayPatientObservations = function(oUrl, lines, pUrl){
-		// get the cached_getpages
-		$.when(
-			$.ajax({
-				type: 'GET',
-				contentType: 'application/json; charset=utf-8',
-				dataType: 'JSON',
-				url: oUrl
-			}),
-			$.ajax({
-				type: 'GET',
-				contentType: 'application/json; charset=utf-8',
-				dataType: 'JSON',
-				url: pUrl
-			})
-		).done(function(observationCall, patientCall, lines){
-			console.log('Here is observation data');
-			console.log(obseravtionCall[0]);
-			console.log('Here is patient data');
-			console.log(patientCall[0]);
-			
-			var ret = observationCall[0].entry;
+	$.displayPatientObservations = function(rUrl, lines){
+		// get the cached _getpages
+		$.ajax({
+			type: 'GET',
+			contentType: 'application/json; charset=utf-8',
+			dataType: 'JSON',
+			url: rUrl
+		})
+		.done(function(data, lines){
+			console.log(data);
+			var ret = data.entry;
 			var options = {
 				weekday: "long", year: "numeric", month: "short",
 				day: "numeric", hour: "2-digit", minute: "2-digit"
@@ -341,28 +283,26 @@
 					metricVal = obj.resource.valueString;
 				} else {
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
-					// check to see if it is part of the alerts
-					if (checkLatestAlerts(display) == true) {
-						// if biometric has not been recorded yet
-						if (latestalerts[display]==null) {
-							latestalerts[display] = {
+					// checking alerts
+					if (checkAlerts(display, obj.resource.valueQuantity.value)==true){
+						alert=true;
+						
+						if (alerts[display]==null) {
+							alerts[display] = {
 								id: idx,
-								val: obj.resource.valueQuantity.value,
-								measure: metricVal,
+								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
 								time: time
 							};
-						// else if it has been recorded
-						} else if (latestalerts[display]!=null){
-							// check to see if it is the latest reading
-							if (parseInt(latestalerts[display].id) < parseInt(idx)) {
-								latestalerts[display] = {
+						} else if (alerts[display]!=null) {
+							// if (Date.parse(alerts[display].time) < Date.parse(time)) {
+							if (parseInt(alerts[display].id) < parseInt(idx)) {
+								alerts[display] = {
 									id: idx,
-									val: obj.resource.valueQuantity.value,
-									measure: metricVal,
+									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
 									time: time
 								};
 							}
-						}
+						} 
 					}
 				}
 				lines = lines + "<tr>";
@@ -374,19 +314,13 @@
 			};
 			$('#patient_data').append(lines);
 			if(data.link[1].relation == "next"){
-				$.displayPatientObservations(data.link[1].url, lines, pUrl);
+				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
-				console.log(latestalerts);
 				var alertList = '';
-
-				for (var param in latestalerts) {
-					// check to see if it triggered high alerts
-					if (checkAlerts(param, latestalerts[param].val)==true){
-						alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
-					}
-				}			
-	
+				for (var alert in alerts) {
+					alertList += alerts[alert].line;
+				}
 				if (alertList!='') {
 					$('#alert').css({display: 'block'});
 					$('#alertbg').css({display: 'block'});
@@ -418,24 +352,16 @@
 		//var pId = $.urlParam('id');
 		var pId = <%=id%>;
 		
-		/*if(checkOnWatch(pId)==true){
-			console.log('Patient is onWatch');
-		}
-		else{
-			console.log('Patient is not onWatch');
-		}*/
-		
 		var rUrl = fhirConfig.serviceUrl + "Patient/" + 
 			pId + "?_format=" + fhirConfig.fmt + "&_pretty=" + fhirConfig.pretty;
 		console.log(rUrl);	
 		$.displayPatientGI(rUrl, pId);		
-		var oUrl = fhirConfig.serviceUrl + "Observation?patient=" + pId +
+		
+		var rUrl = fhirConfig.serviceUrl + "Observation?patient=" + pId +
 			"&_count=" + fhirConfig.count + "&_format=" + fhirConfig.fmt +
 			"&_pretty=" + fhirConfig.pretty;
-    		console.log(oUrl);
-    		var pUrl = "http://fhircharm.herokuapp.com/patient/" + pId
-    		console.log(pUrl);
-		$.displayPatientObservations(oUrl, lines, pUrl);
+    		console.log(rUrl);
+		$.displayPatientObservations(rUrl, lines);
 		console.log('<%=alert%>');
       });
 		  

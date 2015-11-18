@@ -5,9 +5,7 @@ module.exports = function(app) {
 	app.get('/patientdetail/:patientId/:category', utils.ensureAuthenticated, patient.render);
 	
 	app.route('/patient/:patientId')
-		.get(patient.read)
-		.put(patient.update)
-		.delete(patient.delete);
+		.get(patient.read);
 	
 
 	app.param('patientId', function(req, res, next, patientId) {

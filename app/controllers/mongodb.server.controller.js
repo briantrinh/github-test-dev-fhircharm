@@ -1,11 +1,11 @@
-var config = require('../../config/config');
-var mongodb = require('mongodb');
-var fhir = require('fhir-node');
+var config = require('../../config/config'),
+	mongodb = require('mongodb'),
+	Patient = require('mongoose').model('Patient'),
+	fhir = require('fhir-node');
+
 
 exports.updateOnWatch = function(req, res) {
-
-	var Patient = require('mongoose').model('Patient');
-
+	
 	var id = '{"id" : "' + req.patientId + '"}';
 	var query = JSON.parse(id);
 

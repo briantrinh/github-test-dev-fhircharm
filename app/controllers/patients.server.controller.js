@@ -1,5 +1,6 @@
 var config = require('../../config/config'),
 	User = require('mongoose').model('User'),
+	Patient = require('mongoose').model('Patient'),
 	passport = require('passport');
 
 exports.render = function(req, res) {
@@ -26,8 +27,6 @@ exports.render = function(req, res) {
 		}
 	});
 };
-
-var Patient = require('mongoose').model('Patient');
 
 exports.list = function(req, res, next) {
 	Patient.find({}, function(err, patients) {

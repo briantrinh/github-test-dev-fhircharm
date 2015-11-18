@@ -1,5 +1,6 @@
 var config = require('../../config/config'),
 	User = require('mongoose').model('User'),
+	Patient = require('mongoose').model('Patient'),
 	passport = require('passport');
 
 exports.render = function(req, res) {
@@ -76,9 +77,6 @@ exports.render = function(req, res) {
 };
 
 
-
-var Patient = require('mongoose').model('Patient');
-
 exports.create = function(req, res, next) {
 	var patient = new Patient(req.body);
 	
@@ -92,7 +90,17 @@ exports.create = function(req, res, next) {
 };
 
 exports.read = function(req, res) {
-	res.json(req.patient);
+	console.log('read = ' + req.patientId);
+	
+	Patient.findOne({
+		id: req.patientId
+	}, function(err, patient) {
+		if (err) {
+			return next(err);
+		} else {
+			res.json(patient);
+		}
+	});
 };
 
 exports.patientByID = function(req, res, next, id) {
