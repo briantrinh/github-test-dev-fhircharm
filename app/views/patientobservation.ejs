@@ -137,15 +137,31 @@
 	<!-- page script -->
     <script>
 	  // FHIR server connection setting
-	  
+
+	var checkLatestAlerts = function(display) {
+		var alerts = {
+			"Systolic blood pressure": 170,
+			"Diastolic blood pressure": 100,
+			"Heart rate": 120,
+			"Respiratory rate": 22,
+			"Body temperature": 38.9, 
+			"Body mass index (BMI) [Ratio]": 33
+		};
+		for (var param in alerts) {
+			if (param==display) {
+				return true;
+			}
+		}
+		return false;
+	};
+
 	var checkAlerts = function(display, value) {
 		var alerts = {
 			"Systolic blood pressure": 170,
 			"Diastolic blood pressure": 100,
 			"Heart rate": 120,
 			"Respiratory rate": 22,
-			"Body temperature": 102, 
-			"Cholesterol [Mass/volume] in Serum or Plasma": 260,
+			"Body temperature": 38.9, 
 			"Body mass index (BMI) [Ratio]": 33
 		};
 		for (var param in alerts) {
@@ -156,8 +172,10 @@
 		}
 		return false;
 	};
+
+	var latestalerts = {};
 	var alerts = {};
-	var alert = false;
+	
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
 			count: "50",
@@ -296,25 +314,27 @@
 				} else {
 					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// checking alerts
-					if (checkAlerts(display, obj.resource.valueQuantity.value)==true){
-						alert=true;
-						
-						if (alerts[display]==null) {
-							alerts[display] = {
+					if (checkLatestAlerts(display) == true) {
+						// if biometric has not been recorded yet
+						if (latestalerts[display]==null) {
+							latestalerts[display] = {
 								id: idx,
-								line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+								val: obj.resource.valueQuantity.value,
+								measure: metricVal,
 								time: time
 							};
-						} else if (alerts[display]!=null) {
-							// if (Date.parse(alerts[display].time) < Date.parse(time)) {
-							if (parseInt(alerts[display].id) < parseInt(idx)) {
-								alerts[display] = {
+						// else if it has been recorded
+						} else if (latestalerts[display]!=null){
+							// check to see if it is the latest reading
+							if (parseInt(latestalerts[display].id) < parseInt(idx)) {
+								latestalerts[display] = {
 									id: idx,
-									line: '<li>#'+ idx +': '+ display + ' = ' + metricVal +'</li>',
+									val: obj.resource.valueQuantity.value,
+									measure: metricVal,
 									time: time
 								};
 							}
-						} 
+						}
 					}
 				}
 				lines = lines + "<tr>";
@@ -325,14 +345,19 @@
 				lines = lines + "</tr>";
 			};
 			$('#patient_data').append(lines);
-			if(data.link[1].relation == "next"){
+			if(observationCall[0].link[1].relation == "next"){
 				$.displayPatientObservations(data.link[1].url, lines);
 			}
 			else{
 				var alertList = '';
-				for (var alert in alerts) {
-					alertList += alerts[alert].line;
+				
+				for (var param in latestalerts) {
+					// check to see if it triggered high alerts
+					if (checkAlerts(param, latestalerts[param].val)==true){
+						alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+					}
 				}
+				
 				if (alertList!='') {
 					$('#alert').css({display: 'block'});
 					$('#alertbg').css({display: 'block'});
