@@ -222,7 +222,7 @@
 		}
 		return false;
 	};
-	var checkMediumAlerts = function(display, value) {
+	var checkMediumAlerts = function(display, value, unit) {
 		var alerts_medium_max = {
 			"Systolic blood pressure": 170,
 			"Diastolic blood pressure": 100,
@@ -240,13 +240,22 @@
 			"Body mass index (BMI) [Ratio]": 30
 		};
 		for (var param in alerts_medium_max) {
-			if (param==display && value<=alerts_medium_max[param] && value>alerts_medium_min[param]) {
-				return true;
+			if (param==display) {
+				// If in Fahrenheit
+				if(unit == "[degF]"){
+					if(value<=102 && value>100.9) {
+						return true;
+				}
+				}else{
+					if(value<=alerts_medium_max[param] && value>alerts_medium_min[param]) {
+						return true;
+					}
+				}
 			}
 		}
 		return false;
 	};
-	var checkLowAlerts = function(display, value) {
+	var checkLowAlerts = function(display, value, unit) {
 		var alerts_low_max = {
 			"Systolic blood pressure": 140,
 			"Diastolic blood pressure": 90,
@@ -264,8 +273,17 @@
 			"Body mass index (BMI) [Ratio]": 25
 		};
 		for (var param in alerts_low_max) {
-			if (param==display && value<=alerts_low_max[param] && value>alerts_low_min[param]) {
-				return true;
+			if (param==display) {
+				// If in Fahrenheit
+				if(unit == "[degF]"){
+					if(value<=100.9 && value>99.1) {
+						return true;
+				}
+				}else{
+					if(value<=alerts_low_max[param] && value>alerts_low_min[param]) {
+						return true;
+					}
+				}
 			}
 		}
 		return false;
@@ -399,7 +417,6 @@
 				if (obj.resource.valueString != null) {
 					metricVal = obj.resource.valueString;
 				} else {
-					metricVal = obj.resource.valueQuantity.value + obj.resource.valueQuantity.units;
 					// check to see if it is part of the alerts
 					if (checkLatestAlerts(display) == true) {
 						// if biometric has not been recorded yet
@@ -407,7 +424,7 @@
 							latestalerts[display] = {
 								id: idx,
 								val: obj.resource.valueQuantity.value,
-								measure: metricVal,
+								units: obj.resource.valueQuantity.units,
 								time: time
 							};
 						// else if it has been recorded
@@ -417,7 +434,7 @@
 								latestalerts[display] = {
 									id: idx,
 									val: obj.resource.valueQuantity.value,
-									measure: metricVal,
+									units: obj.resource.valueQuantity.units,
 									time: time
 								};
 							}
@@ -437,12 +454,12 @@
 				
 				for (var param in latestalerts) {
 					// check to see if it triggered medium alerts
-					if (checkMediumAlerts(param, latestalerts[param].val)==true){
-						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+					if (checkMediumAlerts(param, latestalerts[param].val, latestalerts[param].units)==true){
+						mediumalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val + latestalerts[param].units +'</li>';
 					}
 					// check to see if it triggered low alerts
-					else if (checkLowAlerts(param, latestalerts[param].val)==true){
-						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+					else if (checkLowAlerts(param, latestalerts[param].val, latestalerts[param].units)==true){
+						lowalertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].val + latestalerts[param].units +'</li>';
 					}
 
 				}
