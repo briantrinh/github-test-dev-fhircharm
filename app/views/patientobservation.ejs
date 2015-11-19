@@ -155,7 +155,7 @@
 		return false;
 	};
 
-	var checkAlerts = function(display, value) {
+	var checkHighAlerts = function(display, value) {
 		var alerts = {
 			"Systolic blood pressure": 170,
 			"Diastolic blood pressure": 100,
@@ -172,9 +172,56 @@
 		}
 		return false;
 	};
-
+	var checkMediumAlerts = function(display, value) {
+		var alerts_medium_max = {
+			"Systolic blood pressure": 170,
+			"Diastolic blood pressure": 100,
+			"Heart rate": 120,
+			"Respiratory rate": 22,
+			"Body temperature": 38.9, 
+			"Body mass index (BMI) [Ratio]": 33
+		};
+		var alerts_medium_min = {
+			"Systolic blood pressure": 140,
+			"Diastolic blood pressure": 90,
+			"Heart rate": 100,
+			"Respiratory rate": 18,
+			"Body temperature": 38.3, 
+			"Body mass index (BMI) [Ratio]": 30
+		};
+		for (var param in alerts_medium_max) {
+			if (param==display && value<=alerts_medium_max[param] && value>alerts_medium_min[param]) {
+				return true;
+			}
+		}
+		return false;
+	};
+	var checkLowAlerts = function(display, value) {
+		var alerts_low_max = {
+			"Systolic blood pressure": 140,
+			"Diastolic blood pressure": 90,
+			"Heart rate": 100,
+			"Respiratory rate": 18,
+			"Body temperature": 38.3, 
+			"Body mass index (BMI) [Ratio]": 29
+		};
+		var alerts_low_min = {
+			"Systolic blood pressure": 120,
+			"Diastolic blood pressure": 80,
+			"Heart rate": 90,
+			"Respiratory rate": 16,
+			"Body temperature": 37.3, 
+			"Body mass index (BMI) [Ratio]": 25
+		};
+		for (var param in alerts_low_max) {
+			if (param==display && value<=alerts_low_max[param] && value>alerts_low_min[param]) {
+				return true;
+			}
+		}
+		return false;
+	};
+	
 	var latestalerts = {};
-	var alerts = {};
 	
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
@@ -286,10 +333,7 @@
 			})
 		).done(function(observationCall, patientCall, lines){
 		
-			console.log('Here is observation data');
 			console.log(observationCall[0]);
-			console.log('Here is patient data');
-			console.log(patientCall[0]);
 			
 			var ret = observationCall[0].entry;
 			var options = {
@@ -351,16 +395,20 @@
 			else{
 				var alertList = '';
 				
-				
+				// If patient is on watch
 				if(patientCall[0].onWatch){
-					console.log('Patient is onWatch');
+					// Display low, medium, and high triggered alerts
 					for (var param in latestalerts) {
-						alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+						// Check to see if alert has been triggered
+						if ( (checkHighAlerts(param, latestalerts[param].val)==true) || (checkMediumAlerts(param, latestalerts[param].val)==true) || (checkLowAlerts(param, latestalerts[param].val)==true) ){
+							alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
+						}
 					}
 				} else{
+					// Display only high triggered alerts
 					for (var param in latestalerts) {
-						// check to see if it triggered high alerts
-						if (checkAlerts(param, latestalerts[param].val)==true){
+						// Check to see if alert has been triggered
+						if (checkHighAlerts(param, latestalerts[param].val)==true || ){
 							alertList += '<li>#'+ latestalerts[param].id +': '+ param + ' = ' + latestalerts[param].measure +'</li>';
 						}
 					}
