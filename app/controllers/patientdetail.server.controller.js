@@ -39,7 +39,7 @@ exports.render = function(req, res) {
 		});
 	} else if (category == 'prescription') {
 		res.render('patientprescription', {
-			title: 'Patient Prescription',
+			title: 'Medication Prescription',
 			menugroup: 'Medication',
 			id: patient_id,
 			pagetype: 'patientprescription',
@@ -51,7 +51,7 @@ exports.render = function(req, res) {
 		});
 	} else if (category == 'dispense') {
 		res.render('patientdispense', {
-			title: 'Patient Prescription Dispense',
+			title: 'Medication Dispense',
 			menugroup: 'Medication',
 			id: patient_id,
 			pagetype: 'patientdispense',

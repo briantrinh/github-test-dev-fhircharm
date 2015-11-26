@@ -1,10 +1,12 @@
-var index = require('../controllers/index.server.controller');
-var mongomgr = require('../controllers/mongodb.server.controller');
-
-var fhir = require('fhir-node');
+var index = require('../controllers/index.server.controller'),
+	mongomgr = require('../controllers/mongodb.server.controller'),
+	fhir = require('fhir-node'),
+	patients = require('../controllers/patients.server.controller'),
+	utils = require('./utils');
 		
 module.exports = function(app) {
-	app.get('/', index.render);
+	//app.get('/', index.render);
+	app.get('/', utils.ensureAuthenticated, patients.render);
 	
 	app.get('/patientupdate', mongomgr.render);
 	
