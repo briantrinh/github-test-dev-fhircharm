@@ -382,6 +382,7 @@
 				if (obj.resource.valueString != null) {
 					metricVal = obj.resource.valueString;
 				} else {
+					metricVal = obj.resource.valueQuantity.value + " " +  obj.resource.valueQuantity.units;
 					// checking alerts
 					if (checkLatestAlerts(display) == true) {
 						// if biometric has not been recorded yet
