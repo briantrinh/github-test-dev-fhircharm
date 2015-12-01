@@ -3,77 +3,102 @@ var config = require('../../config/config'),
 	Patient = require('mongoose').model('Patient'),
 	passport = require('passport');
 
-exports.render = function(req, res) {
+exports.render = function(req, res, next) {
 	
 	var patient_id = req.patientId;
 	var category = req.category;
 	
 	console.log('username: ' + req.user.username);
 	
-	if (category == 'observation') {
+	var id = '{"onWatch" : {"' + req.user.username + '" : "checked"}, "id" : "' + patient_id + '"}';
+	var query = JSON.parse(id);
+	
+	Patient.count(query, function(err, c) {
+		var onWatch = false;
 		
-		res.render('patientobservation', {
-			title: 'Patient Observations',
-			menugroup: 'Profile',
-			id: patient_id,
-			pagetype: 'patientobservation',
-			userid: req.user.username,
-			alert: '',
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});		
+		if (err) {
+			return next(err);			
+		} else {	
+			console.log('c = ' + c);
+			if (c == '1') {
+				console.log('this is onWatch');
+				onWatch = true;
+			}
+		}
 		
-	} else if (category == 'condition') {
-		res.render('patientcondition', {
-			title: 'Patient Conditions',
-			menugroup: 'Profile',
-			id: patient_id,
-			pagetype: 'patientcondition',
-			userid: req.user.username,
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});
-	} else if (category == 'prescription') {
-		res.render('patientprescription', {
-			title: 'Medication Prescription',
-			menugroup: 'Medication',
-			id: patient_id,
-			pagetype: 'patientprescription',
-			userid: req.user.username,
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});
-	} else if (category == 'dispense') {
-		res.render('patientdispense', {
-			title: 'Medication Dispense',
-			menugroup: 'Medication',
-			id: patient_id,
-			pagetype: 'patientdispense',
-			userid: req.user.username,
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});
-	} else if (category == 'alerts') {
-		res.render('patientalerts', {
-			title: 'Patient Alerts',
-			menugroup: 'Alert',
-			id: patient_id,
-			pagetype: 'patientalerts',
-			userid: req.user.username,
-			username: req.user.firstName + ' ' + req.user.lastName,
-			membersince: req.user.created,
-			sessionTimeOut: 'yes',
-			sessionTimeOutDuration: config.sessionTimeOutDuration
-		});
-	}
+		if (category == 'observation') {
+		
+			res.render('patientobservation', {
+				title: 'Patient Observations',
+				menugroup: 'Profile',
+				id: patient_id,
+				pagetype: 'patientobservation',
+				userid: req.user.username,
+				onWatch: onWatch,
+				alert: '',
+				username: req.user.firstName + ' ' + req.user.lastName,
+				membersince: req.user.created,
+				sessionTimeOut: 'yes',
+				sessionTimeOutDuration: config.sessionTimeOutDuration
+			});		
+
+		} else if (category == 'condition') {
+			res.render('patientcondition', {
+				title: 'Patient Conditions',
+				menugroup: 'Profile',
+				id: patient_id,
+				pagetype: 'patientcondition',
+				userid: req.user.username,
+				onWatch: onWatch,
+				username: req.user.firstName + ' ' + req.user.lastName,
+				membersince: req.user.created,
+				sessionTimeOut: 'yes',
+				sessionTimeOutDuration: config.sessionTimeOutDuration
+			});
+		} else if (category == 'prescription') {
+			res.render('patientprescription', {
+				title: 'Medication Prescription',
+				menugroup: 'Medication',
+				id: patient_id,
+				pagetype: 'patientprescription',
+				userid: req.user.username,
+				onWatch: onWatch,
+				username: req.user.firstName + ' ' + req.user.lastName,
+				membersince: req.user.created,
+				sessionTimeOut: 'yes',
+				sessionTimeOutDuration: config.sessionTimeOutDuration
+			});
+		} else if (category == 'dispense') {
+			res.render('patientdispense', {
+				title: 'Medication Dispense',
+				menugroup: 'Medication',
+				id: patient_id,
+				pagetype: 'patientdispense',
+				userid: req.user.username,
+				onWatch: onWatch,
+				username: req.user.firstName + ' ' + req.user.lastName,
+				membersince: req.user.created,
+				sessionTimeOut: 'yes',
+				sessionTimeOutDuration: config.sessionTimeOutDuration
+			});
+		} else if (category == 'alerts') {
+			res.render('patientalerts', {
+				title: 'Patient Alerts',
+				menugroup: 'Alert',
+				id: patient_id,
+				pagetype: 'patientalerts',
+				userid: req.user.username,
+				onWatch: onWatch,
+				username: req.user.firstName + ' ' + req.user.lastName,
+				membersince: req.user.created,
+				sessionTimeOut: 'yes',
+				sessionTimeOutDuration: config.sessionTimeOutDuration
+			});
+		}
+	});
+	
+	
+	
 };
 
 

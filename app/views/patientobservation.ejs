@@ -138,7 +138,8 @@
 	<% include ./partials/define %>	
     <script>
 	// FHIR server connection setting
-				
+	var useronWatch = <%=onWatch%>;
+			
 	var checkLatestAlerts = function(display) {
 		var alerts = {
 			"Systolic blood pressure": 170,
@@ -249,8 +250,6 @@
 	};
 	
 	var latestalerts = {};
-	var onWatch_flag = false;
-	var username = "btrinh618";
 	
 	  var fhirConfig = {
 			serviceUrl: "http://polaris.i3l.gatech.edu:8080/gt-fhir-webapp-ro/base/",
@@ -423,21 +422,13 @@
 			}
 			else{
 				var alertList = '';
+				
 				console.log(latestalerts);
 				
-				console.log(patientCall[0].onWatch);
-				
-				for (var index in patientCall[0].onWatch){
-					for (var physician in patientCall[0].onWatch[index]){
-						console.log(physician);
-						if(physician == username){
-							onWatch_flag = true;
-						}
-					}
-				}
-				
 				// If patient is on watch
-				if(onWatch_flag){
+				//if(patientCall[0].onWatch){
+				if(useronWatch){
+					
 					// Display low, medium, and high triggered alerts
 					for (var param in latestalerts) {
 						// Check to see if alert has been triggered
