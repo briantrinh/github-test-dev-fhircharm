@@ -429,7 +429,7 @@
 				// If patient is on watch
 				if(patientCall[0].onWatch){
 					for (var physician in patientCall[0].onWatch) {
-						console.log(physician);
+						console.log(patientCall[0].onWatch[physician]);
 					}
 					// Display low, medium, and high triggered alerts
 					for (var param in latestalerts) {
