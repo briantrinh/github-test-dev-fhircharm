@@ -425,7 +425,9 @@
 				console.log(latestalerts);
 				
 				console.log(patientCall[0].onWatch);
-				console.log(patientCall[0].onWatch[0].username);
+				for (var physician in patientCall[0].onWatch[0]){
+					console.log(physician);
+				}
 				// If patient is on watch
 				if(patientCall[0].onWatch){
 					// Display low, medium, and high triggered alerts
