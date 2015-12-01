@@ -52,7 +52,12 @@ exports.renderSignup = function(req, res, next) {
 	
 	if (!req.user) {
 		res.render('signup', {
-			messages: req.flash('error')
+			messages: req.flash('error'),
+			firstName: req.flash('firstName'),
+			lastName: req.flash('lastName'),
+			email: req.flash('email'),
+			username: req.flash('username'),
+			password: req.flash('password')
 		});
 	} else {
 		return res.redirect('/');
@@ -71,7 +76,13 @@ exports.signup = function(req, res, next) {
 				var message = getErrorMessage(err);
 				
 				req.flash('error', message);
-				return res.redirect('/signup');
+				req.flash('firstName', req.body.firstName);
+				req.flash('lastName', req.body.lastName);
+				req.flash('email', req.body.email);
+				req.flash('username', req.body.username);
+				req.flash('password', req.body.password);
+				
+				return res.redirect('/user/signup');
 			}
 			
 			req.login(user, function(err) {

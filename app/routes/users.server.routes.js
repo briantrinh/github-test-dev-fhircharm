@@ -28,7 +28,7 @@ module.exports = function(app) {
 		
 		});
 	
-	app.get('/signout', users.signout);
+	app.get('/user/signout', users.signout);
 	
 	
 	app.route('/users')

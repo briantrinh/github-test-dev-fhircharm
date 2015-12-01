@@ -9,28 +9,37 @@ exports.updateOnWatch = function(req, res) {
 	var id = '{"id" : "' + req.patientId + '"}';
 	var query = JSON.parse(id);
 
-	var u = '{"onWatch" : ""}';
-	var updateData =  JSON.parse(u);
+	console.log(req.user.username);
 	
 	if (req.onWatch == 'ifChecked') {
-		//u = u.replace('[checked]','checked');
-		//u = '{"onWatch : {"' + req.user.username + '" : "checked"}"}';
-		//u['onWatch'][req.user.username] = 'checked';
-		updateData.onWatch = 'checked'; //JSON.parse('[{' + req.user.username + ' : checked}]');
-	} else {
-		//u = u.replace('[checked]','');
-		//u = '{"onWatch : {"' + req.user.username + '" : ""}"}';
-		updateData.onWatch = ''; //JSON.parse('[{' + req.user.username + ': ""}]');
-	}
-	
-	//updateData.username = req.user.username;
-	
-	console.log(updateData);
+		//u = '{"onWatch_' + req.user.username + '" : "checked"}';
+		var u = '{"$addToSet" : {"onWatch" : {"' + req.user.username + '" : "checked"}}}';
+		//updateData.onWatch = 'checked'; //JSON.parse('[{' + req.user.username + ' : checked}]');
+		//updateData.onWatch = '[{"' +req.user.username + '": "checked"}]';
 		
-	Patient.update(query, updateData, { multi: true }, function (err, raw) {
-	  if (err) return handleError(err);
-	  console.log('The raw response from Mongo was ', raw);
-	});
+		var updateData = JSON.parse(u);
+	
+		console.log(updateData);
+
+		Patient.findOneAndUpdate(query, updateData, { upsert: true }, function (err, raw) {
+		  if (err) return console.log(err);
+		  console.log('The raw response from Mongo was ', raw);
+		});
+	} else {
+		//updateData =  JSON.parse(u);
+		//updateData.onWatch = JSON.parse(u);
+		
+		var u = '{"$pull" : {"onWatch" : { "$in" : [{"' + req.user.username + '" : "checked"}]}}}';
+		var updateData = JSON.parse(u);
+	
+		console.log(updateData);
+		
+		Patient.findOneAndUpdate(query, updateData, { multi: true }, function (err, raw) {
+		  if (err) return console.log(err);
+		  console.log('The raw response from Mongo was ', raw);
+		});
+		
+	}
 	
 	res.send('ok');
 };
@@ -73,6 +82,7 @@ exports.render = function(req, res) {
 					var query = JSON.parse(id);
 					var o = '{"upsert" : true}';
 					var option = JSON.parse(o);
+					var onWatchData = '[{"admin" : ""}]';
 
 					var updateData =  JSON.parse(id);
 					updateData.name = doc.resource.name;

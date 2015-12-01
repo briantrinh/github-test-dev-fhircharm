@@ -5,9 +5,11 @@ var index = require('../controllers/index.server.controller'),
 	utils = require('./utils');
 		
 module.exports = function(app) {
-	//app.get('/', index.render);
-	app.get('/', utils.ensureAuthenticated, patients.render);
 	
+	app.get('/admin', index.render);
+	
+	app.get('/', utils.ensureAuthenticated, patients.render);
+		
 	app.get('/patientupdate', mongomgr.render);
 	
 	app.get('/patientupdate/json', function(req, res) {

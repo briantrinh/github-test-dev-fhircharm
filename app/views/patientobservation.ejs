@@ -135,9 +135,10 @@
          fixed layout. -->
 	  
 	<!-- page script -->
+	<% include ./partials/define %>	
     <script>
-	  // FHIR server connection setting
-
+	// FHIR server connection setting
+				
 	var checkLatestAlerts = function(display) {
 		var alerts = {
 			"Systolic blood pressure": 170,
@@ -423,8 +424,11 @@
 				
 				console.log(latestalerts);
 				
+				console.log(patientCall[0].onWatch);
+				
 				// If patient is on watch
 				if(patientCall[0].onWatch){
+					
 					// Display low, medium, and high triggered alerts
 					for (var param in latestalerts) {
 						// Check to see if alert has been triggered

@@ -12,7 +12,10 @@ var PatientSchema = new Schema({
 	gender: String,
 	address: String,
 	birthDate: String,
-	onWatch: String,
+	onWatch: { 
+		type : Array,
+		default : [] 
+	},
 	created: {
 		type: Date,
 		default: Date.now

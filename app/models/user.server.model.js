@@ -17,6 +17,7 @@ var UserSchema = new Schema({
 	},
 	email: {
 		type: String,
+		required: 'Email is required',
 		match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
 	},
 	username: {

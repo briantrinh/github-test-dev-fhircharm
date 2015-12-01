@@ -25,6 +25,67 @@ if (window.location.pathname.indexOf('/user/') == -1 ) {
 		$('#sessionTimer').html('Session Time Remaining: ' + sessionTimeRemaining / 1000 + ' sec.');
 	}, 1000);
 }
-//$( '#profile_image, #profile_image2, #profile_image3')
-	
+
+// extract patient general information
+$.displayNotifications = function(){
+  var rUrl = "/patients/notification";
+
+  console.info(rUrl);
+
+  $.ajax({
+	type: 'GET',
+	contentType: 'application/json; charset=utf-8',
+	dataType: 'JSON',
+	url: rUrl
+  })
+  .done(function(data, status){
+
+	var ret = data;
+	var lines = "";
+
+	console.log(ret);
+
+	/* Create a patient list */
+	for ( var i = 0; i < ret.length; i++) {
+		var obj = ret[i];
+
+		var idx = obj.id;
+		var fName = "";
+		var lName = "";
+		var gender = "";
+
+		try {
+			fName = obj.name[0].given[0];
+			lName = obj.name[0].family[0];
+			gender = obj.gender;
+		} catch(e) {
+			console.log('id=' + idx + ', no objects');
+		}
+
+		var icon = "text-aqua";
+		
+		if (gender == 'female') icon = "text-red";
+		
+		lines = lines + "<li><a href='/patientdetail/" + idx + "/alerts'><i class='fa fa-user " + icon + "'></i>";
+		lines = lines +	fName + " " + lName + "</a></li>";
+
+	};
+
+
+	$('#notificationTotal').append(ret.length);
+	$('#notificationHeader').append("You have " + ret.length + " patient(s) on watch");
+	$('#notificationList').append(lines);
+	  
+	  
+  })
+  .fail(function(){
+	console.log("Ajax failed to fetch data");
+});
+}
+
+$(function () {
+
+	$.displayNotifications();
+
+});
 </script>
